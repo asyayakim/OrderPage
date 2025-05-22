@@ -1,4 +1,4 @@
-namespace Order.Domain;
+namespace ECommerceApp.Domain;
 
 public class OrderItem
 {
