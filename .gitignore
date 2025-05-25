@@ -3,3 +3,6 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+ECommerceApp.Infrastructure/Migrations/20250525192819_InitialCreate.cs
+*.cs
+/.idea

@@ -1,12 +1,22 @@
+using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.EntityFrameworkCore;
+using Order.Infrastructure.Persistence;
+using Order.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 builder.Services.AddOpenApi();
-
+builder.Services.AddScoped<OrderRepository>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddControllers();
 var app = builder.Build();
-    
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.MapControllers();
+app.Run();
