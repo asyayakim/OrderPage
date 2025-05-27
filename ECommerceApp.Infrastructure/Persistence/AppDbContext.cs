@@ -1,3 +1,4 @@
+using ECommerceApp.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Order.Infrastructure.Persistence;
@@ -9,7 +10,8 @@ public class AppDbContext : DbContext
         : base(options)
     {
     }
-    public DbSet<ECommerceApp.Domain.Order> Orders { get; set; } 
+    public DbSet<ECommerceApp.Domain.Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
     
 
 }

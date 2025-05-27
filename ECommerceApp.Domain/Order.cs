@@ -5,7 +5,9 @@ public class Order
     public Guid Id { get; private set; }
     public Guid CustomerId { get; private set; }
     public DateTime OrderDate { get; private set; } = DateTime.UtcNow;
-    private List<OrderItem> _items = new List<OrderItem>();
+    private List<OrderItem> _items = new();
+    public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
+    private Order() {}
     public DateTime CreatedAt { get; private set; }
     public Order(Guid customerId)
     {

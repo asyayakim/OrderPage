@@ -15,7 +15,9 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
             .AddJsonFile("appsettings.json", optional: true)
             .Build();
 
-        var connectionString = config.GetConnectionString("DefaultConnection"); 
+        var connectionString = config.GetConnectionString("DefaultConnection")
+                               ?? "Host=localhost;Database=ecommerce;Username=postgres;Password=12345678"; 
+
 
         optionsBuilder.UseNpgsql(connectionString);
 
