@@ -2,10 +2,10 @@ namespace ECommerceApp.Domain;
 
 public class PricingService
 {
-    public decimal CalculatePrice(ECommerceApp.Domain.Order order)
+    public decimal CalculatePrice(ECommerceApp.Domain.Product product)
     {
         //some price logic
-        if (order == null)
+        if (product == null)
         {
             return 0;
         }

@@ -1,9 +1,17 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Order.Infrastructure.Persistence;
 
 namespace ECommerce.Tests;
 
 public class PostgreeConnectionTest
 {
+    private readonly AppDbContext _context;
+
+    public PostgreeConnectionTest(AppDbContext context)
+    {
+        _context = context;
+    }
+
     [Fact]
     public void TestDbConnection()
     {
@@ -19,5 +27,20 @@ public class PostgreeConnectionTest
 
         Assert.NotEmpty(connectionString);
         Assert.True(!string.IsNullOrEmpty(connectionString));
+    }
+    [Fact]
+    public void TestCollectionIfExist()
+    {
+        //arrange
+        var newOrder = new ECommerceApp.Domain.Product(Guid.NewGuid());
+        _context.Orders.Add(newOrder);
+
+        _context.SaveChanges();
+        // Act
+        var orders = _context.Orders;
+
+        // Assert
+        Assert.NotNull(orders);
+        Assert.True(orders.Any());;
     }
 }

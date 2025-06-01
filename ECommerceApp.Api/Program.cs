@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<OrderRepository>();
+
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<PlaceOrderHandler>();
 builder.Services.AddDbContext<AppDbContext>(options =>

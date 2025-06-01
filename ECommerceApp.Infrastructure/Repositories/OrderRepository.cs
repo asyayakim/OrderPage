@@ -1,6 +1,8 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore; 
+using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.Domain;
 using Order.Infrastructure.Persistence;
+
 
 namespace Order.Infrastructure.Repositories;
 
@@ -13,16 +15,29 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public async Task AddAsync(ECommerceApp.Domain.Order order)
+    public async Task AddAsync(Product product)
     {
-        await _context.Orders.AddAsync(order);
+        await _context.Orders.AddAsync(product);
         await _context.SaveChangesAsync();
     }
-
-    public async Task<ECommerceApp.Domain.Order?> GetByIdAsync(Guid id)
+    public async Task<List<OrderDto>> GetByOrderAsync(Guid id)
     {
-        return await _context.Orders
-            .Include("._items") 
-            .FirstOrDefaultAsync(o => o.Id == id);
+        var orders = await _context.Orders
+            .Include(o => o.Items)
+            .Where(o => o.CustomerId == id)
+            .ToListAsync();
+
+        return orders.Select(order => new OrderDto
+        {
+            CustomerId = order.CustomerId,
+            OrderDate = order.OrderDate,
+            Items = order.Items.Select(item => new OrderItemDto
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                UnitPrice = item.Price
+            }).ToList()
+        }).ToList();
     }
+   
 }

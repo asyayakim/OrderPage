@@ -1,7 +1,7 @@
-namespace ECommerceApp.Domain;
-
-public interface IOrderRepository
+namespace ECommerceApp.Domain
 {
-    Task AddAsync(ECommerceApp.Domain.Order order);
-    Task<ECommerceApp.Domain.Order?> GetByIdAsync(Guid id);
+    public interface IOrderRepository
+    {
+        Task AddAsync(Product product);
+    }
 }

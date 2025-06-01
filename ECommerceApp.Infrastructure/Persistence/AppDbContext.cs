@@ -10,7 +10,7 @@ public class AppDbContext : DbContext
         : base(options)
     {
     }
-    public DbSet<ECommerceApp.Domain.Order> Orders { get; set; }
+    public DbSet<Product> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     
 
