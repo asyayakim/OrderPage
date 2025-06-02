@@ -32,7 +32,7 @@ public class PostgreeConnectionTest
     public void TestCollectionIfExist()
     {
         //arrange
-        var newOrder = new ECommerceApp.Domain.Product(Guid.NewGuid());
+        var newOrder = new ECommerceApp.Domain.ProductOrder(Guid.NewGuid());
         _context.Orders.Add(newOrder);
 
         _context.SaveChanges();

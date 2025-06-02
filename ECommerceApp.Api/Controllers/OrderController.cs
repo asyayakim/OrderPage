@@ -1,10 +1,12 @@
 using ApplicationLayer;
 using ECommerceApp.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Order.Infrastructure.Repositories;
 
 namespace ECommerceApp.Api.Controllers;
 [ApiController]
+[AllowAnonymous]
 [Route("api/[controller]")]
 public class OrderController : ControllerBase
 {
@@ -35,5 +37,12 @@ public class OrderController : ControllerBase
     {
         var products = await _repository.GetAllAsync();
         return Ok(products);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> RemoveOrder(Guid id)
+    {
+        var order = await _repository.RemoveOrderAsync(id);
+        return order != null ? Ok(order) : NotFound();
     }
 }

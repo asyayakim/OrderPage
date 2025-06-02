@@ -15,7 +15,7 @@ public class PlaceOrderHandler
     }
     public async Task<Guid> Handle(PlaceOrderCommand command)
     {
-        var order = new Product(command.CustomerId);
+        var order = new ProductOrder(command.CustomerId);
 
         foreach (var item in command.Items)
         {

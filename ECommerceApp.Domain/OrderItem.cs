@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ECommerceApp.Domain;
 
 public class OrderItem
@@ -6,8 +8,9 @@ public class OrderItem
     public Guid ProductId { get; private set; }
     public int Quantity { get; private set; }
     public decimal Price { get; private set; }
-    public Product Product { get; private set; } = null!;
-    private OrderItem() {}
+    // [JsonIgnore]
+    public ProductOrder ProductOrder { get; private set; } = null!;
+
     public OrderItem(Guid productId, int quantity, decimal price)
     {
         ProductId = productId;
