@@ -39,5 +39,22 @@ public class OrderRepository : IOrderRepository
             }).ToList()
         }).ToList();
     }
-   
+
+    public async Task<List<OrderDto>> GetAllAsync()
+    {
+        var products = await _context
+            .Orders.Include(o => o.Items).
+            ThenInclude(i => i.Product).ToListAsync();
+        return products.Select(product => new OrderDto
+        {
+            CustomerId = product.CustomerId,
+            OrderDate = product.OrderDate,
+            Items = product.Items.Select(item => new OrderItemDto
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                UnitPrice = item.Price
+            }).ToList()
+        }).ToList();
+    }
 }

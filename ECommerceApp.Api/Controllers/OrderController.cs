@@ -29,4 +29,11 @@ public class OrderController : ControllerBase
       var order = await _repository.GetByOrderAsync(id);
         return order != null ? Ok(order) : NotFound();
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllProducts()
+    {
+        var products = await _repository.GetAllAsync();
+        return Ok(products);
+    }
 }
