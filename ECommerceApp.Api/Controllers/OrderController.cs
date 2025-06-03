@@ -1,4 +1,4 @@
-using ApplicationLayer;
+using ECommerceApp.ApplicationLayer;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

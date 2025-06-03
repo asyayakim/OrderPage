@@ -13,9 +13,9 @@ public class ProductOrder
         CustomerId = customerId;
         CreatedAt = DateTime.UtcNow;
     }
-    public void AddProductItem(Guid productId, int quantity, decimal unitPrice)
+    public void AddProductItem(Guid productId, string category, string imageUrl,int quantity, decimal unitPrice)
     {
         Items.Add(new OrderItem
-            (productId, quantity, unitPrice));
+            (productId, category, imageUrl, quantity, unitPrice));
     }
 }

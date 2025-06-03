@@ -1,4 +1,4 @@
-using ApplicationLayer;
+using ECommerceApp.ApplicationLayer;
 using ECommerceApp.Domain;
 using Microsoft.EntityFrameworkCore;
 using Order.Infrastructure.Persistence;

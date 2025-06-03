@@ -1,10 +1,9 @@
-﻿using ECommerceApp.Domain;
+﻿using ECommerceApp.ApplicationLayer.DTO;
+using ECommerceApp.Domain;
 
-namespace ApplicationLayer;
+namespace ECommerceApp.ApplicationLayer;
 
 public record PlaceOrderCommand(Guid CustomerId, List<OrderItemDto> Items);
-public record OrderItemDto(Guid ProductId, int Quantity, decimal UnitPrice);
-
 public class PlaceOrderHandler
 {
     private readonly IOrderRepository _repository;
@@ -19,7 +18,7 @@ public class PlaceOrderHandler
 
         foreach (var item in command.Items)
         {
-            order.AddProductItem(item.ProductId, item.Quantity, item.UnitPrice);
+            order.AddProductItem(item.ProductId, item.Category, item.ImageUrl, item.Quantity, item.UnitPrice);
         }
 
         await _repository.AddAsync(order);
