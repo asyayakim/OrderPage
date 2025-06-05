@@ -4,11 +4,13 @@ public class PricingService
 {
     public decimal CalculatePrice(ProductOrder productOrder)
     {
-        //some price logic
-        if (productOrder == null)
+        var category = productOrder.Items.Select(item => item.Category).Distinct().Single();
+        var amount = productOrder.Items.Select(item => item.Quantity).Sum();
+        var price = productOrder.Items.Select(item => item.Price).Sum();
+        if (category == "fruit" && amount >= 3)
         {
-            return 0;
+            price *= 0.8m;
         }
-        return 0;
+        return price;
     }
 }

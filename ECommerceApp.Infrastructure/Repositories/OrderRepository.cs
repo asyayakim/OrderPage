@@ -9,14 +9,17 @@ namespace Order.Infrastructure.Repositories;
 public class OrderRepository : IOrderRepository
 {
     private readonly AppDbContext _context;
+    private readonly PricingService _pricingService;
 
-    public OrderRepository(AppDbContext context)
+    public OrderRepository(AppDbContext context, PricingService pricingService)
     {
         _context = context;
+        _pricingService = pricingService;
     }
 
     public async Task AddAsync(ProductOrder productOrder)
     {
+        _pricingService.CalculatePrice(productOrder);
         await _context.Orders.AddAsync(productOrder);
         await _context.SaveChangesAsync();
     }
