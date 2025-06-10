@@ -17,7 +17,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task AddAsync(ProductOrder productOrder)
     {
-        productOrder.CalculatePrice(productOrder);
+        // productOrder.CalculatePrice(productOrder);
         await _context.Orders.AddAsync(productOrder);
         await _context.SaveChangesAsync();
     }

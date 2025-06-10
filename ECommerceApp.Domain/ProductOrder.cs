@@ -21,30 +21,27 @@ public class ProductOrder
             (productId, category, imageUrl, quantity, unitPrice));
     }
 
-
-    public void CalculatePrice(ProductOrder productOrder)
+    public void CalculatePrice(List<IDiscountStrategy> strategies)
     {
-        if (!Items.Any())
-            return;
-        var category = productOrder.Items.Select(item => item.Category).Distinct().Single();
-        var amount = productOrder.Items.Sum(item => item.Quantity);
-        foreach (var orderItem in productOrder.Items)
-        {
-            var price = orderItem.Price;
-            if (category == "fruit")
-            {
-                price *= 0.95m;
-                orderItem.SetDiscount(5);
-            }
+        if (!Items.Any()) return;
 
-            if (category == "meat" && amount >= 3)
+        TotalPrice = 0;
+
+        foreach (var item in Items)
+        {
+            var discount = strategies.FirstOrDefault(s => s.IsApplicable(item, Items));
+            if (discount != null)
             {
-                price *= 0.70m;
-                orderItem.SetDiscount(30);
+                var newPrice = discount.ApplyDiscount(item);
+                item.SetUpdatedPrice(newPrice);
+                item.SetDiscount(discount.DiscountPercentage);
+                TotalPrice += newPrice * item.Quantity;
             }
-            orderItem.SetUpdatedPrice(price);
-            TotalPrice = price * amount;
+            else
+            {
+                item.SetUpdatedPrice(item.Price);
+                TotalPrice += item.Price * item.Quantity;
+            }
         }
-       
     }
 }

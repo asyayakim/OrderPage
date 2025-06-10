@@ -20,6 +20,13 @@ public class PlaceOrderHandler
         {
             order.AddProductItem(item.ProductId, item.Category, item.ImageUrl, item.Quantity, item.UnitPrice);
         }
+        var strategies = new List<IDiscountStrategy>
+        {
+            new FruitDiscount(),
+            new MeatDiscount(),
+        };
+
+        order.CalculatePrice(strategies);
 
         await _repository.AddAsync(order);
         return order.Id;
