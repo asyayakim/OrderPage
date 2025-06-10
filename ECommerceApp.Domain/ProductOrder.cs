@@ -34,11 +34,13 @@ public class ProductOrder
             if (category == "fruit")
             {
                 price *= 0.95m;
+                orderItem.SetDiscount(5);
             }
 
             if (category == "meat" && amount >= 3)
             {
                 price *= 0.70m;
+                orderItem.SetDiscount(30);
             }
             orderItem.SetUpdatedPrice(price);
             TotalPrice = price * amount;

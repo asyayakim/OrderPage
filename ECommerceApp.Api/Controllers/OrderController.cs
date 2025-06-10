@@ -25,10 +25,11 @@ public class OrderController : ControllerBase
         var orderId = await _handler.Handle(command);
         return Ok(new { OrderId = orderId });
     }
+    
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetOrder(Guid id)
+    public async Task<IActionResult> GetOrder(Guid customerId)
     {
-      var order = await _repository.GetByOrderAsync(id);
+      var order = await _repository.GetByOrderAsync(customerId);
         return order != null ? Ok(order) : NotFound();
     }
 

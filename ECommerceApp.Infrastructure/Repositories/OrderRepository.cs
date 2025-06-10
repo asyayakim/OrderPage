@@ -32,6 +32,7 @@ public class OrderRepository : IOrderRepository
         {
             CustomerId = order.CustomerId,
             OrderDate = order.OrderDate,
+            TotalPrice = order.TotalPrice,
             Items = order.Items.Select(item => new OrderItemDto
             {
                 ProductId = item.ProductId,
@@ -39,6 +40,8 @@ public class OrderRepository : IOrderRepository
                 UnitPrice = item.Price,
                 Category = item.Category,
                 ImageUrl = item.ImageUrl,
+                Discount = item.Discount,
+                PriceWithDiscount = item.PriceWithDiscount,
             }).ToList()
         }).ToList();
     }
@@ -51,13 +54,16 @@ public class OrderRepository : IOrderRepository
             CustomerId = product.CustomerId,
             OrderDate = product.OrderDate,
             TotalPrice = product.TotalPrice,
+            
             Items = product.Items.Select(item => new OrderItemDto
             {
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
                 UnitPrice = item.Price,
                 Category = item.Category,
-                ImageUrl = item.ImageUrl
+                ImageUrl = item.ImageUrl,
+                Discount = item.Discount,
+                PriceWithDiscount = item.PriceWithDiscount,
             }).ToList()
         }).ToList();
     }

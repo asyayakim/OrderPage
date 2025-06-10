@@ -10,8 +10,10 @@ public class OrderItem
     public string ImageUrl { get; private set; } 
     public int Quantity { get; private set; }
     public decimal Price { get; private set; }
-    //public decimal PriceWithDiscount { get; private set; }
-    //public int? discount {get; private set;}
+    [JsonIgnore]
+    public decimal? PriceWithDiscount { get; private set; }
+    [JsonIgnore]
+    public int? Discount {get; private set;}
     // [JsonIgnore]
     public ProductOrder ProductOrder { get; private set; } = null!;
 
@@ -25,6 +27,11 @@ public class OrderItem
     }
     public void SetUpdatedPrice(decimal newPrice)
     {
-        Price = newPrice;
+        PriceWithDiscount = newPrice;
+    }
+
+    public void SetDiscount(int percentage)
+    {
+        Discount = percentage;
     }
 }
