@@ -10,6 +10,8 @@ public class OrderItem
     public string ImageUrl { get; private set; } 
     public int Quantity { get; private set; }
     public decimal Price { get; private set; }
+    //public decimal PriceWithDiscount { get; private set; }
+    //public int? discount {get; private set;}
     // [JsonIgnore]
     public ProductOrder ProductOrder { get; private set; } = null!;
 

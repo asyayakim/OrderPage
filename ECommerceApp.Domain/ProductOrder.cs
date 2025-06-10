@@ -8,7 +8,7 @@ public class ProductOrder
     public List<OrderItem> Items { get; private set; } = new();
     public DateTime CreatedAt { get; private set; }
     
-    //public double TotalPrice { get; private set; }
+    public decimal TotalPrice { get; private set; }
     public ProductOrder(Guid customerId)
     {
         Id = Guid.NewGuid();
@@ -41,6 +41,7 @@ public class ProductOrder
                 price *= 0.70m;
             }
             orderItem.SetUpdatedPrice(price);
+            TotalPrice = price * amount;
         }
        
     }

@@ -38,7 +38,7 @@ public class OrderRepository : IOrderRepository
                 Quantity = item.Quantity,
                 UnitPrice = item.Price,
                 Category = item.Category,
-                ImageUrl = item.ImageUrl
+                ImageUrl = item.ImageUrl,
             }).ToList()
         }).ToList();
     }
@@ -50,6 +50,7 @@ public class OrderRepository : IOrderRepository
         {
             CustomerId = product.CustomerId,
             OrderDate = product.OrderDate,
+            TotalPrice = product.TotalPrice,
             Items = product.Items.Select(item => new OrderItemDto
             {
                 ProductId = item.ProductId,
