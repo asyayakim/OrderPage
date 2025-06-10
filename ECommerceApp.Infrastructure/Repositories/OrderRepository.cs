@@ -9,17 +9,15 @@ namespace Order.Infrastructure.Repositories;
 public class OrderRepository : IOrderRepository
 {
     private readonly AppDbContext _context;
-    private readonly PricingService _pricingService;
 
-    public OrderRepository(AppDbContext context, PricingService pricingService)
+    public OrderRepository(AppDbContext context)
     {
         _context = context;
-        _pricingService = pricingService;
     }
 
     public async Task AddAsync(ProductOrder productOrder)
     {
-        _pricingService.CalculatePrice(productOrder);
+        productOrder.CalculatePrice(productOrder);
         await _context.Orders.AddAsync(productOrder);
         await _context.SaveChangesAsync();
     }
@@ -38,7 +36,9 @@ public class OrderRepository : IOrderRepository
             {
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
-                UnitPrice = item.Price
+                UnitPrice = item.Price,
+                Category = item.Category,
+                ImageUrl = item.ImageUrl
             }).ToList()
         }).ToList();
     }

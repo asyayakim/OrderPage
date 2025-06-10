@@ -21,4 +21,8 @@ public class OrderItem
         Quantity = quantity;
         Price = price;
     }
+    public void SetUpdatedPrice(decimal newPrice)
+    {
+        Price = newPrice;
+    }
 }
