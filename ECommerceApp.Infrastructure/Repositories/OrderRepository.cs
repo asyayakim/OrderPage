@@ -17,7 +17,6 @@ public class OrderRepository : IOrderRepository
 
     public async Task AddAsync(ProductOrder productOrder)
     {
-        // productOrder.CalculatePrice(productOrder);
         await _context.Orders.AddAsync(productOrder);
         await _context.SaveChangesAsync();
     }
@@ -41,6 +40,8 @@ public class OrderRepository : IOrderRepository
                 Category = item.Category,
                 ImageUrl = item.ImageUrl,
                 Discount = item.Discount,
+                Description = item.Description,
+                ProductName = item.ProductName,
                 PriceWithDiscount = item.PriceWithDiscount,
             }).ToList()
         }).ToList();
@@ -64,6 +65,7 @@ public class OrderRepository : IOrderRepository
                 ImageUrl = item.ImageUrl,
                 Discount = item.Discount,
                 PriceWithDiscount = item.PriceWithDiscount,
+                ProductName = item.ProductName
             }).ToList()
         }).ToList();
     }

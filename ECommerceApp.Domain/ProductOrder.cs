@@ -15,10 +15,11 @@ public class ProductOrder
         CustomerId = customerId;
         CreatedAt = DateTime.UtcNow;
     }
-    public void AddProductItem(Guid productId, string category, string imageUrl,int quantity, decimal unitPrice)
+    public void AddProductItem(Guid productId, string category, string imageUrl,
+        int quantity, decimal unitPrice, string description, string productName)
     {
         Items.Add(new OrderItem
-            (productId, category, imageUrl, quantity, unitPrice));
+            (productId, category, imageUrl, quantity, unitPrice, description, productName));
     }
 
     public void CalculatePrice(List<IDiscountStrategy> strategies)

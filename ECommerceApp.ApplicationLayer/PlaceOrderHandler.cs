@@ -18,7 +18,8 @@ public class PlaceOrderHandler
 
         foreach (var item in command.Items)
         {
-            order.AddProductItem(item.ProductId, item.Category, item.ImageUrl, item.Quantity, item.UnitPrice);
+            order.AddProductItem(item.ProductId, item.Category, item.ImageUrl,
+                item.Quantity, item.UnitPrice, item.Description, item.ProductName);
         }
         var strategies = new List<IDiscountStrategy>
         {
