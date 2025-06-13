@@ -31,7 +31,7 @@ public class OrderRepository : IOrderRepository
         {
             CustomerId = order.CustomerId,
             OrderDate = order.OrderDate,
-            TotalPrice = order.TotalPriceWithDiscount,
+            TotalPriceWithDiscount = order.TotalPriceWithDiscount,
             TotalPriceWithoutDiscount = order.TotalPriceWithoutDiscount,
             Items = order.Items.Select(item => new OrderItemDto
             {
@@ -43,7 +43,7 @@ public class OrderRepository : IOrderRepository
                 Discount = item.Discount,
                 Description = item.Description,
                 ProductName = item.ProductName,
-                PriceWithDiscount = item.PriceWithDiscount,
+                UnitPriceWithDiscount = item.UnitPriceWithDiscount,
             }).ToList()
         }).ToList();
     }
@@ -55,7 +55,8 @@ public class OrderRepository : IOrderRepository
         {
             CustomerId = product.CustomerId,
             OrderDate = product.OrderDate,
-            TotalPrice = product.TotalPriceWithDiscount,
+            TotalPriceWithDiscount = product.TotalPriceWithDiscount,
+            TotalPriceWithoutDiscount = product.TotalPriceWithoutDiscount,
             
             Items = product.Items.Select(item => new OrderItemDto
             {
@@ -65,7 +66,7 @@ public class OrderRepository : IOrderRepository
                 Category = item.Category,
                 ImageUrl = item.ImageUrl,
                 Discount = item.Discount,
-                PriceWithDiscount = item.PriceWithDiscount,
+                UnitPriceWithDiscount = item.UnitPriceWithDiscount,
                 ProductName = item.ProductName
             }).ToList()
         }).ToList();

@@ -21,7 +21,7 @@ public class ProductOrderTests
         var item = order.Items.First();
         Assert.Equal(15, item.Discount);
         //Assert.Equal(85m, item.PriceWithDiscount);
-        Assert.Equal(85m * 5, order.TotalPriceWithDicount);
+        Assert.Equal(85m * 5, order.TotalPriceWithoutDiscount);
     }
     [Fact]
     public void CheckApplyDiscountMeat()
@@ -60,12 +60,12 @@ public class ProductOrderTests
         var meat = order.Items.First(i => i.Category == "meat");
 
         Assert.Equal(15, fruit.Discount);
-        Assert.Equal(8.5m, fruit.PriceWithDiscount);
+        Assert.Equal(8.5m, fruit.UnitPriceWithDiscount);
 
         Assert.Null(meat.Discount);
-        Assert.Equal(50, meat.PriceWithDiscount);
+        Assert.Equal(50, meat.UnitPriceWithDiscount);
 
         var expectedTotal = (8.5m * 2) + (50 * 1);
-        Assert.Equal(expectedTotal, order.TotalPriceWithDicount);
+        Assert.Equal(expectedTotal, order.TotalPriceWithDiscount);
     }
 }

@@ -11,7 +11,7 @@ public class OrderItem
     public int Quantity { get; private set; }
     public decimal Price { get; private set; }
     [JsonIgnore]
-    public decimal? PriceWithDiscount { get; private set; }
+    public decimal? UnitPriceWithDiscount { get; private set; }
     
     [JsonIgnore]
     public int? Discount {get; private set;}
@@ -33,7 +33,7 @@ public class OrderItem
     }
     public void SetUpdatedPrice(decimal newPrice)
     {
-        PriceWithDiscount = newPrice;
+        UnitPriceWithDiscount = newPrice;
     }
 
     public void SetDiscount(int percentage)

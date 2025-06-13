@@ -45,7 +45,7 @@ public class ProductOrder
             {
                 item.SetUpdatedPrice(item.Price);
                 TotalPriceWithDiscount += item.Price * item.Quantity;
-                
+                TotalPriceWithoutDiscount += item.Quantity * item.Price;
             }
         }
     }
