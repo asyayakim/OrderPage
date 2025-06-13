@@ -8,7 +8,8 @@ public class ProductOrder
     public List<OrderItem> Items { get; private set; } = new();
     public DateTime CreatedAt { get; private set; }
     
-    public decimal TotalPrice { get; private set; }
+    public decimal TotalPriceWithDiscount { get; private set; }
+    public decimal TotalPriceWithoutDiscount { get; private set; }
     public ProductOrder(Guid customerId)
     {
         Id = Guid.NewGuid();
@@ -26,7 +27,8 @@ public class ProductOrder
     {
         if (!Items.Any()) return;
 
-        TotalPrice = 0;
+        TotalPriceWithDiscount = 0;
+        TotalPriceWithoutDiscount = 0;
 
         foreach (var item in Items)
         {
@@ -36,12 +38,14 @@ public class ProductOrder
                 var newPrice = discount.ApplyDiscount(item);
                 item.SetUpdatedPrice(newPrice);
                 item.SetDiscount(discount.DiscountPercentage);
-                TotalPrice += newPrice * item.Quantity;
+                TotalPriceWithDiscount += newPrice * item.Quantity;
+                TotalPriceWithoutDiscount += item.Quantity * item.Price;
             }
             else
             {
                 item.SetUpdatedPrice(item.Price);
-                TotalPrice += item.Price * item.Quantity;
+                TotalPriceWithDiscount += item.Price * item.Quantity;
+                
             }
         }
     }

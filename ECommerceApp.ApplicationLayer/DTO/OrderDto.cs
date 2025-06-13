@@ -18,6 +18,7 @@ namespace ECommerceApp.ApplicationLayer.DTO
         public string? ImageUrl { get; set; }
         public int? Discount { get; set; }
         public decimal? PriceWithDiscount { get; set; }
+        public decimal PriceWithoutDiscount { get; set; }
         public string? Description { get; set; }
         public required string ProductName { get; set; }
     }

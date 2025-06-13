@@ -31,7 +31,8 @@ public class OrderRepository : IOrderRepository
         {
             CustomerId = order.CustomerId,
             OrderDate = order.OrderDate,
-            TotalPrice = order.TotalPrice,
+            TotalPrice = order.TotalPriceWithDiscount,
+            TotalPriceWithoutDiscount = order.TotalPriceWithoutDiscount,
             Items = order.Items.Select(item => new OrderItemDto
             {
                 ProductId = item.ProductId,
@@ -54,7 +55,7 @@ public class OrderRepository : IOrderRepository
         {
             CustomerId = product.CustomerId,
             OrderDate = product.OrderDate,
-            TotalPrice = product.TotalPrice,
+            TotalPrice = product.TotalPriceWithDiscount,
             
             Items = product.Items.Select(item => new OrderItemDto
             {

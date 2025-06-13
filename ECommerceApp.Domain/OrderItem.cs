@@ -12,6 +12,7 @@ public class OrderItem
     public decimal Price { get; private set; }
     [JsonIgnore]
     public decimal? PriceWithDiscount { get; private set; }
+    
     [JsonIgnore]
     public int? Discount {get; private set;}
     public string? Description { get; private set; }
