@@ -19,8 +19,8 @@ public class CustomerController : ControllerBase
         var result = await _repository.GetAllCustomers();
         return Ok(result);
     }
-    [HttpGet]
-    public async Task<IActionResult> GetCustomerById([FromQuery] Guid id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCustomerById(Guid id)
     {
         var result = await _repository.GetByIdAsync(id);
         return Ok(result);
@@ -28,7 +28,7 @@ public class CustomerController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegisterCustomer([FromBody] CustomerDto dto)
     {
-        var customer = new Customer(dto.Name, dto.Email, new Address(dto.Street, dto.City, dto.ZipCode));
+        var customer = new Customer(dto.Name, dto.Email, new Address(dto.Street, dto.ZipCode));
         await _repository.AddAsync(customer);
         return Ok(customer.Id);
     }

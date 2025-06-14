@@ -1,21 +1,45 @@
+using System.Data.Entity;
 using ECommerceApp.Domain;
+using Order.Infrastructure.Persistence;
 
 namespace Order.Infrastructure.Repositories;
 
 public class CustomerRepository : ICustomerRepository
 {
-    public Task<Customer?> GetByIdAsync(Guid id)
+    private readonly AppDbContext _dbContext;
+
+    public CustomerRepository(AppDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task AddAsync(Customer customer)
+    public async Task<Customer> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+        if (user == null)
+        { 
+            throw new ArgumentException("Customer not found");
+        }
+        return user;
     }
 
-    public Task<object?> GetAllCustomers()
+    public async Task AddAsync(Customer customer)
     {
-        throw new NotImplementedException();
+        if (customer == null)
+        {
+            throw new ArgumentNullException(nameof(customer));
+        }
+        await _dbContext.AddAsync(customer);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<List<Customer>> GetAllCustomers()
+    {
+        var allClients = await _dbContext.Customers.ToListAsync();
+        if (allClients == null)
+        {
+            throw new ArgumentException("No Customers were found");
+        }
+        return allClients;
     }
 }

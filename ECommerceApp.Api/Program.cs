@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
