@@ -12,5 +12,6 @@ public class Customer
     {
         Name = name;
         Email = email;
+        Address = address;
     }
 }

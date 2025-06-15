@@ -1,4 +1,5 @@
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+
 using ECommerceApp.Domain;
 using Order.Infrastructure.Persistence;
 
