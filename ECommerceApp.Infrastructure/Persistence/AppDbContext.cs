@@ -1,9 +1,10 @@
 using ECommerceApp.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Order.Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+public class AppDbContext :  IdentityDbContext<UserData>
 {
     public AppDbContext(DbContextOptions
         <AppDbContext> options)
