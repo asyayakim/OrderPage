@@ -2,7 +2,6 @@ namespace ECommerceApp.Domain;
 
 public class Customer
 {
-    private Customer() { } 
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Name { get; private set; }
     public string Email { get; private set; }
@@ -14,4 +13,5 @@ public class Customer
         Email = email;
         Address = address;
     }
+    private Customer() { } 
 }

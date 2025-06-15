@@ -2,7 +2,7 @@
 
 public class ProductOrder
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
     public Guid CustomerId { get; private set; }
     public DateTime OrderDate { get; private set; } = DateTime.UtcNow;
     public List<OrderItem> Items { get; private set; } = new();
@@ -12,9 +12,7 @@ public class ProductOrder
     public decimal TotalPriceWithoutDiscount { get; private set; }
     public ProductOrder(Guid customerId)
     {
-        Id = Guid.NewGuid();
         CustomerId = customerId;
-        CreatedAt = DateTime.UtcNow;
     }
     public void AddProductItem(Guid productId, string category, string imageUrl,
         int quantity, decimal unitPrice, string description, string productName)

@@ -16,7 +16,11 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task<Customer> GetByIdAsync(Guid id)
     {
-        var user = await _dbContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
+        var user = await _dbContext.Customers
+            .Include(c => c.Address)
+            .FirstOrDefaultAsync(c => c.Id == id);
+          
+        
         if (user == null)
         { 
             throw new ArgumentException("Customer not found");
@@ -36,7 +40,8 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task<List<Customer>> GetAllCustomers()
     {
-        var allClients = await _dbContext.Customers.ToListAsync();
+        var allClients = await _dbContext
+            .Customers.Include(a => a.Address).ToListAsync();
         if (allClients == null)
         {
             throw new ArgumentException("No Customers were found");
