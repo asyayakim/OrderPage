@@ -1,4 +1,5 @@
 using ECommerceApp.Domain;
+using ECommerceApp.Domain.Discounts;
 using Xunit.Sdk;
 
 namespace ECommerce.Tests;

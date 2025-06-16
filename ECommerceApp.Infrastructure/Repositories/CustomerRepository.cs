@@ -1,3 +1,4 @@
+using ECommerceApp.ApplicationLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 using ECommerceApp.Domain;

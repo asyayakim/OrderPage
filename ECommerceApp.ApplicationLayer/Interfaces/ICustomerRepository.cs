@@ -1,4 +1,6 @@
-namespace ECommerceApp.Domain;
+using ECommerceApp.Domain;
+
+namespace ECommerceApp.ApplicationLayer.Interfaces;
 
 public interface ICustomerRepository
 {

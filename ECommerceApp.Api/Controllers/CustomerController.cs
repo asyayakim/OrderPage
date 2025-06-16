@@ -1,4 +1,5 @@
 using ECommerceApp.ApplicationLayer.DTO;
+using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Mvc;
 

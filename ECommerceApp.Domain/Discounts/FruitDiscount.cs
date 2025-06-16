@@ -1,4 +1,4 @@
-namespace ECommerceApp.Domain;
+namespace ECommerceApp.Domain.Discounts;
 
 public class FruitDiscount : IDiscountStrategy
 {

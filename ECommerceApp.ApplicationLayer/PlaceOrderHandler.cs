@@ -1,5 +1,7 @@
 ﻿using ECommerceApp.ApplicationLayer.DTO;
+using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
+using ECommerceApp.Domain.Discounts;
 
 namespace ECommerceApp.ApplicationLayer;
 

@@ -1,7 +1,14 @@
+using System.Text;
 using ECommerceApp.ApplicationLayer;
+using ECommerceApp.ApplicationLayer.Interfaces;
+using ECommerceApp.ApplicationLayer.Services;
 using ECommerceApp.Domain;
+using ECommerceApp.Domain.Discounts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Order.Infrastructure.Persistence;
 using Order.Infrastructure.Repositories;
 
@@ -15,7 +22,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
         options.JsonSerializerOptions.WriteIndented = true;
     });
-
+builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<OrderRepository>();
@@ -33,13 +40,60 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
 });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["SupaBase:JwtSecret"])
+        ),
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["SupaBase:ValidIssuer"],
+        ValidateAudience = true,
+        ValidAudience = "authenticated",
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+builder.Services.AddAuthorization();
 
+builder.Services.AddSwaggerGen(
+    options =>
+    {
+        options.AddSecurityDefinition("BearerAuth", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "Please provide your Bearer Token to use locked endpoints."
+        });
+        options.AddSecurityRequirement(
+            new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "BearerAuth"
+                        }
+                    },
+                    []
+                }
+            }
+        );
+    }
+);
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.MapControllers();
 app.UseAuthentication();

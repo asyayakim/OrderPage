@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore; 
 using ECommerceApp.ApplicationLayer.DTO;
+using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Order.Infrastructure.Persistence;
 
