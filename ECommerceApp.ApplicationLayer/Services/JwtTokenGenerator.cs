@@ -36,11 +36,11 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             claims.Add(new Claim("Age", user.Age.ToString()));
         }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SupaBase:JwtSecret"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:JwtSecret"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _config["SupaBase:ValidIssuer"],
+            issuer: _config["Jwt:JwtSecret"],
             audience: "authenticated",
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(60),

@@ -28,6 +28,7 @@ builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<PlaceOrderHandler>();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<UserData, IdentityRole>()
@@ -46,10 +47,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["SupaBase:JwtSecret"])
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:JwtSecret"])
         ),
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["SupaBase:ValidIssuer"],
+        ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
         ValidateAudience = true,
         ValidAudience = "authenticated",
         ValidateLifetime = true,
@@ -61,7 +62,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddSwaggerGen(
     options =>
     {
-        options.AddSecurityDefinition("BearerAuth", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        options.AddSecurityDefinition("BearerAuth", new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.Http,
             Scheme = "bearer",
@@ -87,16 +88,14 @@ builder.Services.AddSwaggerGen(
     }
 );
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-
+// }
+    
 app.UseHttpsRedirection();
-
-app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapControllers();
 app.Run();
