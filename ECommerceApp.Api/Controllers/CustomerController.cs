@@ -26,12 +26,12 @@ public class CustomerController : ControllerBase
         var result = await _repository.GetByIdAsync(id);
         return Ok(result);
     }
-    [HttpPost]
-    public async Task<IActionResult> RegisterCustomer([FromBody] CustomerDto dto)
-    {
-        var address = new Address(dto.Street, dto.ZipCode);
-        var customer = new Customer(dto.Name, dto.Email, address);
-        await _repository.AddAsync(customer);
-        return Ok(customer.Id);
-    }
+    // [HttpPost]
+    // public async Task<IActionResult> RegisterCustomer([FromBody] CustomerDto dto)
+    // {
+    //     var address = new Address(dto.Street, dto.ZipCode);
+    //     var customer = new Customer(dto.Name, dto.Email, address, dto.Age);
+    //     await _repository.AddAsync(customer);
+    //     return Ok(customer.Id);
+    // }
 }

@@ -4,6 +4,7 @@ using ECommerceApp.ApplicationLayer.Services;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Order.Infrastructure.Repositories;
 
 namespace ECommerceApp.Api.Controllers;
 [ApiController]
@@ -12,11 +13,13 @@ public class UserController : ControllerBase
 {
     private readonly UserManager<UserData> _userManager;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly UserRepository _userRepository;
 
-    public UserController(UserManager<UserData> userManager, IJwtTokenGenerator jwtTokenGenerator)
+    public UserController(UserManager<UserData> userManager, IJwtTokenGenerator jwtTokenGenerator, UserRepository userRepository)
     {
         _userManager = userManager;
         _jwtTokenGenerator = jwtTokenGenerator;
+        _userRepository = userRepository;
     }
 
     [HttpPost]
@@ -28,6 +31,7 @@ public class UserController : ControllerBase
         {
             return BadRequest(result.Errors);
         }
+        var saveUser = await _userRepository.SaveToDbAsync(userDto);
 
         return Ok("User registered successfully");
     }

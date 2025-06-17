@@ -21,7 +21,8 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            //potential problem with guid
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.UserName),
         };
