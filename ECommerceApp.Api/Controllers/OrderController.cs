@@ -32,6 +32,12 @@ public class OrderController : ControllerBase
         {
             return Unauthorized();
         }
+        var ageClaim = User.FindFirst("Age");
+        if (ageClaim == null || !int.TryParse(ageClaim.Value, out int age))
+        {
+            return Unauthorized("Age claim missing or invalid.");
+        }
+        command.Age = age;
 
         command.CustomerId = userId; 
         var orderId = await _handler.Handle(command);

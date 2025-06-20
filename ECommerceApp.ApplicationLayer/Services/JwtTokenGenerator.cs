@@ -21,7 +21,6 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     {
         var claims = new List<Claim>
         {
-            
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.UserName),
@@ -34,12 +33,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
-
-        if (user.Age > 0)
-        {
-            claims.Add(new Claim("Age", user.Age.ToString()));
-        }
-
+        claims.Add(new Claim("Age", user.Age.ToString()));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:JwtSecret"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

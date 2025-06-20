@@ -10,10 +10,13 @@ public class ProductOrder
     
     public decimal TotalPriceWithDiscount { get; private set; }
     public decimal TotalPriceWithoutDiscount { get; private set; }
-    public ProductOrder(Guid customerId)
+    private int UserAge { get; set; }
+    public ProductOrder(Guid customerId, int userAge)
     {
         CustomerId = customerId;
+        UserAge = userAge;
     }
+    private ProductOrder() { }
     public void AddProductItem(Guid productId, string category, string imageUrl,
         int quantity, decimal unitPrice, string description, string productName)
     {
@@ -24,6 +27,12 @@ public class ProductOrder
     public void CalculatePrice(List<IDiscountStrategy> strategies)
     {
         if (!Items.Any()) return;
+        if (!Items.Any()) return;
+
+        if (UserAge < 18 && Items.Any(i => i.Category.Equals("tobacco", StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new InvalidOperationException("Customers under 18 cannot purchase tobacco products.");
+        }
 
         TotalPriceWithDiscount = 0;
         TotalPriceWithoutDiscount = 0;

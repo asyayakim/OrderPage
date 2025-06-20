@@ -9,6 +9,7 @@ public class PlaceOrderCommand
 {
     public Guid CustomerId { get; set; }
     public List<OrderItemDto> Items { get; set; }
+    public int Age {get;set;}
 
 }
 public class PlaceOrderHandler
@@ -21,7 +22,7 @@ public class PlaceOrderHandler
     }
     public async Task<Guid> Handle(PlaceOrderCommand command)
     {
-        var order = new ProductOrder(command.CustomerId);
+        var order = new ProductOrder(command.CustomerId, command.Age);
 
         foreach (var item in command.Items)
         {

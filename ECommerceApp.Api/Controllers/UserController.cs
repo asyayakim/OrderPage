@@ -49,12 +49,6 @@ public class UserController : ControllerBase
             return Unauthorized();
         var roles = await _userManager.GetRolesAsync(user);
         var token = _jwtTokenGenerator.GenerateToken(user, roles);
-        Console.WriteLine("IsAuthenticated: " + User.Identity?.IsAuthenticated);
-        Console.WriteLine("Claims:");
-        foreach (var claim in User.Claims)
-        {
-            Console.WriteLine($"{claim.Type}: {claim.Value}");
-        }
 
         return Ok(new { Token = token });
         
