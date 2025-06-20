@@ -6,13 +6,14 @@ namespace ECommerceApp.Domain;
 
 public class UserData : IdentityUser<Guid>
 {
-    
-    [MaxLength(100)]
-    public string FirstName { get; set; }
-  
-    [MaxLength(100)]
-    public string LastName { get; set; }
+    public UserData()
+    {
+        Id = Guid.NewGuid(); 
+    }
+    [MaxLength(100)] public string FirstName { get; set; }
+
+    [MaxLength(100)] public string LastName { get; set; }
+
     [Range(13, 120, ErrorMessage = "Age must be between 13-120")]
     public int Age { get; set; }
-    [JsonIgnore]
-    public virtual Customer Customer { get; set; }}
+}

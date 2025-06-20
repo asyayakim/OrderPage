@@ -30,8 +30,7 @@ public class OrderItem
     {
         if (quantity <= 0)
             throw new ArgumentException("Quantity must be greater than zero");
-        if (price > 0)
-            throw new ArgumentException("Price must be greater than zero");
+  
         ProductId = productId;
         Category = category;
         ImageUrl = imageUrl;

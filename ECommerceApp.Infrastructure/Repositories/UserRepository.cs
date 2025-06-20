@@ -14,17 +14,10 @@ public class UserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<object> SaveToDbAsync(CreateUserDto userDto)
+    public async Task<object> SaveToDbAsync(Customer customer)
     {
-        var newUser = new UserData
-        {
-            FirstName = userDto.FirstName,
-            LastName = userDto.LastName,
-            Email = userDto.Email,
-            Age = userDto.Age,
-        };
-        await _dbContext.Users.AddAsync(newUser);
+        await _dbContext.Customers.AddAsync(customer);
         await _dbContext.SaveChangesAsync();
-        return newUser;
+        return customer;
     }
 }

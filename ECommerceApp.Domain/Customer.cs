@@ -1,30 +1,42 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ECommerceApp.Domain;
 
 public class Customer
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    [Key]
+    public Guid Id { get; private set; }
     
-    [ForeignKey(nameof(UserData))]
-    public Guid UserId { get; private set; } = Guid.NewGuid();
-    public virtual UserData User { get; set; }
+    [ForeignKey("User")]
+    public Guid UserId { get; set; } = Guid.NewGuid();
+    
     [MaxLength(200)]
     public string Name { get; private set; }
     [EmailAddress]
     [MaxLength(256)]
     public string Email { get; private set; }
+    [JsonIgnore]
     public Address Address { get; private set; }
     [Range(1, 120)]
     public int Age { get; private set; }
     
-    public Customer(string name, string email, Address address, int age)
+    public Customer(string name, string email, int age)
     {
+        Id = Guid.NewGuid();
         Name = name;
         Email = email;
-        Address = address;
         Age = age;
     }
     private Customer() { } 
+    public static Customer Create(Guid userId, string name, string email,int age)
+    {
+        var customer = new Customer( name, email, age)
+        {
+            UserId = userId,
+            Id = userId
+        };       
+        return customer;
+    }
 }

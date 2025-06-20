@@ -5,7 +5,12 @@ using ECommerceApp.Domain.Discounts;
 
 namespace ECommerceApp.ApplicationLayer;
 
-public record PlaceOrderCommand(Guid CustomerId, List<OrderItemDto> Items);
+public class PlaceOrderCommand
+{
+    public Guid CustomerId { get; set; }
+    public List<OrderItemDto> Items { get; set; }
+
+}
 public class PlaceOrderHandler
 {
     private readonly IOrderRepository _repository;
@@ -27,6 +32,7 @@ public class PlaceOrderHandler
         {
             new FruitDiscount(),
             new MeatDiscount(),
+            new TobaccoDiscount()
         };
 
         order.CalculatePrice(strategies);

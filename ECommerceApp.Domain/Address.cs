@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ECommerceApp.Domain;
 
@@ -20,6 +21,7 @@ public class Address
     public string Country { get; private set; } = "Norway";
     [ForeignKey(nameof(Customer))]
     public Guid CustomerId { get; private set; }
+    [JsonIgnore]
     public Customer Customer { get; private set; }
     private Address() { }
     public Address(string street, string zipCode, Guid customerId)

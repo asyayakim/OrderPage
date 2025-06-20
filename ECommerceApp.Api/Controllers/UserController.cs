@@ -1,6 +1,5 @@
 using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
-using ECommerceApp.ApplicationLayer.Services;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(CreateUserDto userDto)
+    public async Task<IActionResult> Register([FromBody]CreateUserDto userDto)
     {
         var user = userDto.ToUserData();
         var result = await _userManager.CreateAsync(user, userDto.Password);
@@ -31,7 +30,13 @@ public class UserController : ControllerBase
         {
             return BadRequest(result.Errors);
         }
-        var saveUser = await _userRepository.SaveToDbAsync(userDto);
+        var customer = Customer.Create(
+            user.Id,
+            $"{userDto.FirstName} {userDto.LastName}",
+            userDto.Email,
+            userDto.Age
+        );
+        _ = await _userRepository.SaveToDbAsync(customer);
 
         return Ok("User registered successfully");
     }
@@ -44,6 +49,14 @@ public class UserController : ControllerBase
             return Unauthorized();
         var roles = await _userManager.GetRolesAsync(user);
         var token = _jwtTokenGenerator.GenerateToken(user, roles);
+        Console.WriteLine("IsAuthenticated: " + User.Identity?.IsAuthenticated);
+        Console.WriteLine("Claims:");
+        foreach (var claim in User.Claims)
+        {
+            Console.WriteLine($"{claim.Type}: {claim.Value}");
+        }
+
         return Ok(new { Token = token });
+        
     }
 }

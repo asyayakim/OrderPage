@@ -21,11 +21,14 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     {
         var claims = new List<Claim>
         {
-            //potential problem with guid
+            
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+        Console.WriteLine("User ID for token: " + user.Id);
 
         foreach (var role in roles)
         {
@@ -41,7 +44,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _config["Jwt:JwtSecret"],
+            issuer: _config["Jwt:ValidIssuer"],
             audience: "authenticated",
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(60),

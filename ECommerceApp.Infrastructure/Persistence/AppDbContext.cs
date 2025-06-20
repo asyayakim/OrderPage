@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Order.Infrastructure.Persistence;
 
-public class AppDbContext : IdentityDbContext<UserData, IdentityRole<Guid>, Guid>
+public class AppDbContext : IdentityDbContext<UserData, AppRole, Guid>
 {
     public AppDbContext(DbContextOptions
         <AppDbContext> options)
@@ -22,13 +22,6 @@ public class AppDbContext : IdentityDbContext<UserData, IdentityRole<Guid>, Guid
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<UserData>()
-            .HasOne(u => u.Customer)
-            .WithOne(c => c.User)
-            .HasForeignKey<Customer>(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         modelBuilder.Entity<Customer>()
             .HasOne(c => c.Address)
             .WithOne(a => a.Customer)

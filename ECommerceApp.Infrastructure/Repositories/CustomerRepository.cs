@@ -20,8 +20,6 @@ public class CustomerRepository : ICustomerRepository
         var user = await _dbContext.Customers
             .Include(c => c.Address)
             .FirstOrDefaultAsync(c => c.Id == id);
-          
-        
         if (user == null)
         { 
             throw new ArgumentException("Customer not found");
