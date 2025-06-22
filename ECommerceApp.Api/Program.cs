@@ -47,6 +47,9 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+builder.Services.AddIdentity<UserData, AppRole>()
+    .AddEntityFrameworkStores<AppDbContext>() 
+    .AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
