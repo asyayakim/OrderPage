@@ -2,9 +2,9 @@ namespace ECommerceApp.Domain.Discounts;
 
 public class TobaccoDiscount : IDiscountStrategy
 {
-    public bool IsApplicable(OrderItem item, List<OrderItem> allItems)
+    public bool IsApplicable(OrderItem item, List<OrderItem> allItems,int age)
         => item.Category.Equals("tobacco", 
-               StringComparison.OrdinalIgnoreCase)
+               StringComparison.OrdinalIgnoreCase) && age >= 18
            && allItems.Where(i => i.Category == "tobacco").
                Sum(i => i.Quantity) >= 12; 
 

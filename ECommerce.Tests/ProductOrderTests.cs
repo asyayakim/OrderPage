@@ -73,4 +73,17 @@ public class ProductOrderTests
         var expectedTotal = (8.5m * 2) + (50 * 1);
         Assert.Equal(expectedTotal, order.TotalPriceWithDiscount);
     }
+
+    [Fact]
+    public void TestTobaccoPurchase_Under18_ThrowsException()
+    {
+        var order = new ProductOrder(Guid.NewGuid(), userAge: 17);
+
+        var exeption = Assert.Throws<InvalidOperationException>(() =>
+        {
+            order.AddProductItem(Guid.NewGuid(), "tobacco", "tobacco.png", 1, 90, "something", "Malbrr");
+        });
+        Assert.Equal("Customers under 18 cannot purchase tobacco products.", exeption.Message);
+    }
+
 }

@@ -2,7 +2,7 @@ namespace ECommerceApp.Domain.Discounts;
 
 public class MeatDiscount : IDiscountStrategy
 {
-    public bool IsApplicable(OrderItem item, List<OrderItem> allItems)
+    public bool IsApplicable(OrderItem item, List<OrderItem> allItems,int age)
     => item.Category.Equals("meat", 
         StringComparison.OrdinalIgnoreCase)
     && allItems.Where(i => i.Category == "meat").

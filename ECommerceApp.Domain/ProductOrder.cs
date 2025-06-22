@@ -20,6 +20,10 @@ public class ProductOrder
     public void AddProductItem(Guid productId, string category, string imageUrl,
         int quantity, decimal unitPrice, string description, string productName)
     {
+        if (category.Equals("tobacco", StringComparison.OrdinalIgnoreCase) && UserAge < 18)
+        {
+            throw new InvalidOperationException("Customers under 18 cannot purchase tobacco products.");
+        }
         Items.Add(new OrderItem
             (productId, category, imageUrl, quantity, unitPrice, description, productName));
     }
@@ -39,7 +43,7 @@ public class ProductOrder
 
         foreach (var item in Items)
         {
-            var discount = strategies.FirstOrDefault(s => s.IsApplicable(item, Items));
+            var discount = strategies.FirstOrDefault(s => s.IsApplicable(item, Items, UserAge));
             if (discount != null)
             {
                 var newPrice = discount.ApplyDiscount(item);

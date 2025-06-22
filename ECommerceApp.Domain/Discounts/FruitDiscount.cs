@@ -4,7 +4,7 @@ public class FruitDiscount : IDiscountStrategy
 {
     public int DiscountPercentage => 15;
 
-    public bool IsApplicable(OrderItem item, List<OrderItem> allItems) =>
+    public bool IsApplicable(OrderItem item, List<OrderItem> allItems,int age) =>
         item.Category.Equals("fruit", StringComparison.OrdinalIgnoreCase);
 
     public decimal ApplyDiscount(OrderItem item) =>
