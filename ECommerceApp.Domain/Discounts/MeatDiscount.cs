@@ -1,4 +1,4 @@
-namespace ECommerceApp.Domain;
+namespace ECommerceApp.Domain.Discounts;
 
 public class MeatDiscount : IDiscountStrategy
 {
@@ -6,7 +6,7 @@ public class MeatDiscount : IDiscountStrategy
     => item.Category.Equals("meat", 
         StringComparison.OrdinalIgnoreCase)
     && allItems.Where(i => i.Category == "meat").
-    Sum(i => i.Price * i.Quantity) >= 3;
+    Sum(i => i.Quantity) >= 3;
 
     public decimal ApplyDiscount(OrderItem item) =>
         item.Price * (1 - DiscountPercentage / 100m);

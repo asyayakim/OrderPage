@@ -39,7 +39,7 @@ public class PostgreeConnectionTest
     [Fact]
     public void TestCollectionIfExist()
     {
-        var newOrder = new ProductOrder(Guid.NewGuid());
+        var newOrder = new ProductOrder(Guid.NewGuid(), userAge: 20);
         _context.Orders.Add(newOrder);
         _context.SaveChanges();
 

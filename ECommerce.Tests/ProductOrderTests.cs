@@ -9,7 +9,7 @@ public class ProductOrderTests
     [Fact]
     public void CheckApplyDiscountFruit()
     {
-        var order = new ProductOrder(Guid.NewGuid());
+        var order = new ProductOrder(Guid.NewGuid(), 19);
         order.AddProductItem(Guid.NewGuid(), "fruit", "picture.png", 5,
             25, "something", "name");
       
@@ -21,13 +21,15 @@ public class ProductOrderTests
 
         var item = order.Items.First();
         Assert.Equal(15, item.Discount);
-        //Assert.Equal(85m, item.PriceWithDiscount);
-        Assert.Equal(85m * 5, order.TotalPriceWithoutDiscount);
+        Assert.Equal(21.25m, item.UnitPriceWithDiscount);
+        Assert.Equal(125m, order.TotalPriceWithoutDiscount);
+        Assert.Equal(25m, item.Price);
+        Assert.Equal(106.25m, order.TotalPriceWithDiscount);
     }
     [Fact]
     public void CheckApplyDiscountMeat()
     {
-        var order = new ProductOrder(Guid.NewGuid());
+        var order = new ProductOrder(Guid.NewGuid(), 19);
         order.AddProductItem(Guid.NewGuid(), "meat", "picture.png", 5,
             25, "something", "name");
       
@@ -39,11 +41,13 @@ public class ProductOrderTests
 
         var item = order.Items.First();
         Assert.Equal(30, item.Discount);
+        Assert.Equal(17.5m, item.UnitPriceWithDiscount);
+        Assert.Equal(125m, order.TotalPriceWithoutDiscount);
     }
     [Fact]
     public void OnlyMatchingItems_GetDiscount()
     {
-        var order = new ProductOrder(Guid.NewGuid());
+        var order = new ProductOrder(Guid.NewGuid(), userAge: 19);
         order.AddProductItem(Guid.NewGuid(), "fruit", "fruit.png", 2, 10, "something",
             "name"); 
         order.AddProductItem(Guid.NewGuid(), "meat", "meat.png", 1, 50, "something",
