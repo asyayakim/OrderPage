@@ -12,7 +12,7 @@ public class PlaceOrderCommand
     public int Age {get;set;}
 
 }
-public class PlaceOrderHandler
+public class PlaceOrderHandler : IPlaceOrderHandler
 {
     private readonly IOrderRepository _repository;
 

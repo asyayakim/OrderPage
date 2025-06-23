@@ -19,7 +19,7 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<PlaceOrderHandler>();
+builder.Services.AddScoped<IPlaceOrderHandler, PlaceOrderHandler>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

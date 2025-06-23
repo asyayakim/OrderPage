@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ECommerceApp.ApplicationLayer;
+using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +13,9 @@ namespace ECommerceApp.Api.Controllers;
 [Route("api/[controller]")]
 public class OrderController : ControllerBase
 {
-    private readonly PlaceOrderHandler _handler;
+    //private readonly PlaceOrderHandler _handler;
     private readonly OrderRepository _repository;
+    private readonly IPlaceOrderHandler _handler;
 
     public OrderController(PlaceOrderHandler handler, OrderRepository repository)
     {
