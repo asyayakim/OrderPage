@@ -3,6 +3,7 @@ namespace ECommerceApp.ApplicationLayer.DTO
 
     public class OrderDto
     {
+        public Guid Id { get; set; }
         public Guid? CustomerId { get; set; }
         public List<OrderItemDto>? Items { get; set; }
         public DateTime? OrderDate { get; set; }

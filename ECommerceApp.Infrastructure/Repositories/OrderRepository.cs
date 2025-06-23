@@ -21,7 +21,7 @@ public class OrderRepository : IOrderRepository
         await _context.Orders.AddAsync(productOrder);
         await _context.SaveChangesAsync();
     }
-    public async Task<List<OrderDto>> GetByOrderAsync(Guid id)
+    public async Task<List<OrderDto>> GetOrdersByCustomerIdAsync(Guid id)
     {
         var orders = await _context.Orders
             .Include(o => o.Items)
@@ -51,9 +51,11 @@ public class OrderRepository : IOrderRepository
 
     public async Task<List<OrderDto>> GetAllAsync()
     {
-        var products = await _context.Orders.Include(o => o.Items).ToListAsync();
+        var products = await _context.Orders.Include(o => o.Items)
+            .ToListAsync();
         return products.Select(product => new OrderDto
         {
+            Id = product.Id,
             CustomerId = product.CustomerId,
             OrderDate = product.OrderDate,
             TotalPriceWithDiscount = product.TotalPriceWithDiscount,
@@ -79,5 +81,14 @@ public class OrderRepository : IOrderRepository
        _context.Orders.Remove(order?? throw new Exception("Order not found"));
        await _context.SaveChangesAsync();
        return order;
+    }
+
+    public async Task<object?> GetOrderByProductOrderIdAsync(Guid productOrderId)
+    {
+        var product = await _context.Orders.Include(i => i.Items)
+            .Where(p => p.Id == productOrderId)
+            .ToListAsync();
+        return product.FirstOrDefault();
+
     }
 }

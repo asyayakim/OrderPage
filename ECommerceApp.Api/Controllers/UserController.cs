@@ -1,6 +1,7 @@
 using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Order.Infrastructure.Repositories;
@@ -40,7 +41,7 @@ public class UserController : ControllerBase
 
         return Ok("User registered successfully");
     }
-
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto login)
     {

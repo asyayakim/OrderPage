@@ -44,14 +44,18 @@ public class OrderController : ControllerBase
     
         return Ok(new { OrderId = orderId });
     }
-    
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOrder(Guid customerId)
+    [HttpGet("customer")]
+    public async Task<IActionResult> GetOrdersByCustomerId(Guid customerId)
     {
-      var order = await _repository.GetByOrderAsync(customerId);
+      var order = await _repository.GetOrdersByCustomerIdAsync(customerId);
         return order != null ? Ok(order) : NotFound();
     }
-
+    [HttpGet("orderId")]
+    public async Task<IActionResult> GetOrdersByOrderId(Guid productOrderId)
+    {
+        var order = await _repository.GetOrderByProductOrderIdAsync(productOrderId);
+        return order != null ? Ok(order) : NotFound();
+    }
     [HttpGet]
     public async Task<IActionResult> GetAllProducts()
     {
