@@ -38,6 +38,10 @@ public class ProductOrder
             throw new InvalidOperationException("Customers under 18 cannot purchase tobacco products.");
         }
 
+        if (UserAge < 21 && Items.Any(i => i.Category.Equals("alcohol", StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new InvalidOperationException("Customers under 21 cannot purchase alcohol products.");
+        }
         TotalPriceWithDiscount = 0;
         TotalPriceWithoutDiscount = 0;
 

@@ -5,13 +5,6 @@ using ECommerceApp.Domain.Discounts;
 
 namespace ECommerceApp.ApplicationLayer;
 
-public class PlaceOrderCommand
-{
-    public Guid CustomerId { get; set; }
-    public List<OrderItemDto> Items { get; set; }
-    public int Age {get;set;}
-
-}
 public class PlaceOrderHandler : IPlaceOrderHandler
 {
     private readonly IOrderRepository _repository;
@@ -20,7 +13,7 @@ public class PlaceOrderHandler : IPlaceOrderHandler
     {
         _repository = repository;
     }
-    public async Task<Guid> Handle(PlaceOrderCommand command)
+    public async Task<Guid> Handle(CreateProductOrderDto command)
     {
         var order = new ProductOrder(command.CustomerId, command.Age);
 
@@ -33,7 +26,8 @@ public class PlaceOrderHandler : IPlaceOrderHandler
         {
             new FruitDiscount(),
             new MeatDiscount(),
-            new TobaccoDiscount()
+            new TobaccoDiscount(),
+            new AlcoholDiscount()
         };
 
         order.CalculatePrice(strategies);

@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ECommerceApp.ApplicationLayer;
+using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,6 @@ namespace ECommerceApp.Api.Controllers;
 [Route("api/[controller]")]
 public class OrderController : ControllerBase
 {
-    //private readonly PlaceOrderHandler _handler;
     private readonly OrderRepository _repository;
     private readonly IPlaceOrderHandler _handler;
 
@@ -25,7 +25,7 @@ public class OrderController : ControllerBase
 
     [Authorize]
     [HttpPost("place")]
-    public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderCommand command)
+    public async Task<IActionResult> PlaceOrder([FromBody] CreateProductOrderDto command)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) 
                           ?? User.FindFirst(JwtRegisteredClaimNames.Sub);
