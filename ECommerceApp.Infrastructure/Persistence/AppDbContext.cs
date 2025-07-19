@@ -12,7 +12,7 @@ public class AppDbContext : IdentityDbContext<UserData, AppRole, Guid>
         : base(options)
     {
     }
-
+    public DbSet<EmbeddingEntry> Embeddings { get; set; }
     public DbSet<ProductOrder> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Customer> Customers { get; set; }

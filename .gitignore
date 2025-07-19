@@ -10,6 +10,7 @@ DDDStore.sln.DotSettings.user
 /.appsettings.json
 ECommerceApp.Api/appsettings.json
 appsettings.json
-ECommerceApp.Api/appsettings.json
 ECommerceApp.Domain/.DS_Store
 
+ECommerceApp.Infrastructure/.DS_Store
+ECommerceApp.Api/appsettings.json
