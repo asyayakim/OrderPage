@@ -7,10 +7,10 @@ public class EmbeddingEntry
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
-    public string TextContent { get; set; } = null!;
+    public string TextContent { get; set; } 
 
     [Required]
-    public float[] Embedding { get; set; } = null!; 
+    public float[] Embedding { get; set; } 
 
     public string? Metadata { get; set; } 
 }

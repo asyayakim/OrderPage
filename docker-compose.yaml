@@ -13,3 +13,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 volumes:
   pgdata:
+
+networks:
+  orderpage_network:
+    external: true
