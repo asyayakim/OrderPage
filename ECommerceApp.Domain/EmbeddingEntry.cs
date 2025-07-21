@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Pgvector;
 
 namespace ECommerceApp.Domain;
 
@@ -10,7 +11,7 @@ public class EmbeddingEntry
     public string TextContent { get; set; } 
 
     [Required]
-    public float[] Embedding { get; set; } 
+    public Vector Embedding { get; set; } 
 
     public string? Metadata { get; set; } 
 }

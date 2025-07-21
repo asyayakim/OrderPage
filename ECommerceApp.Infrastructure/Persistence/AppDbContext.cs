@@ -27,14 +27,17 @@ public class AppDbContext : IdentityDbContext<UserData, AppRole, Guid>
             .WithOne(a => a.Customer)
             .HasForeignKey<Address>(a => a.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+       
         modelBuilder.Entity<EmbeddingEntry>(entity =>
         {
             entity.ToTable("embeddings"); 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.TextContent).HasColumnName("text_content");
-            entity.Property(e => e.Embedding).HasColumnName("embedding");
+            entity.Property(e => e.Embedding)
+                .HasColumnName("embedding")
+                .HasColumnType("vector");
             entity.Property(e => e.Metadata).HasColumnName("metadata");
-        });    
+        });  
+        
     }
 }

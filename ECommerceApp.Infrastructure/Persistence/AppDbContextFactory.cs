@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
+
 namespace Order.Infrastructure.Persistence;
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
@@ -16,10 +17,10 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
             .Build();
 
         var connectionString = config.GetConnectionString("DefaultConnection")
-                               ?? "Host=localhost;Database=ecommerce;Username=postgres;Password=postgres"; 
+                               ?? "Host=localhost;Port=5432;Database=ecommerce;Username=postgres;Password=postgres"; 
 
 
-        optionsBuilder.UseNpgsql(connectionString);
+        optionsBuilder.UseNpgsql(connectionString, o => o.UseVector());
 
         return new AppDbContext(optionsBuilder.Options);
     }
