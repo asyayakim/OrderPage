@@ -23,6 +23,9 @@ builder.Services.AddScoped<IPlaceOrderHandler, PlaceOrderHandler>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<ProductImporter>();
+
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("BearerAuth", new OpenApiSecurityScheme
@@ -50,6 +53,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddIdentity<UserData, AppRole>()
     .AddEntityFrameworkStores<AppDbContext>() 
     .AddDefaultTokenProviders();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
