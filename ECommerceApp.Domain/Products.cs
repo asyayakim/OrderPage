@@ -11,5 +11,6 @@ public class Products
     public string ProductName { get; set; }
     public string ImageUrl { get; set; }
     public string Description { get; set; }
-    public string Category { get; set; }
+    public string Store { get; set; }
+    public string Ingridients { get; set; }
 }

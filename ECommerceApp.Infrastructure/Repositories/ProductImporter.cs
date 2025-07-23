@@ -37,12 +37,11 @@ public class ProductImporter
                 UnitPrice = apiProduct.CurrentPrice,
                 ProductName = apiProduct.Name,
                 ImageUrl = apiProduct.Image ?? "Unknown",
-                Description = !string.IsNullOrEmpty(apiProduct.Description) 
-                    ? apiProduct.Description 
-                    : !string.IsNullOrEmpty(apiProduct.Ingredients)
-                        ? apiProduct.Ingredients
-                        : "No description available",
-                Category = apiProduct.Store?.Name ?? "Unknown"
+                Description = apiProduct.Description
+                 ?? "No description available",
+                Store = apiProduct.Store?.Name ?? "Unknown",
+                Ingridients = apiProduct.Ingredients
+                ?? "Unknown"
             };
 
             try
@@ -65,8 +64,8 @@ public class ProductImporter
         var payload = new
         {
             name = product.ProductName,
-            description = product.Description,
-            category = product.Category
+            description = product.Description, 
+            ingredients = product.Ingridients
         };
 
         var response = await _httpClient.PostAsJsonAsync("http://localhost:5050/save_product_with_embedding", payload);
