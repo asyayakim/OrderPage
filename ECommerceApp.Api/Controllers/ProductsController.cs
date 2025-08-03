@@ -8,10 +8,12 @@ namespace ECommerceApp.Api.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly ProductImporter _productImporter;
+    private readonly ProductServer _productServer;
 
-    public ProductsController(ProductImporter productImporter)
+    public ProductsController(ProductImporter productImporter, ProductServer productServer)
     {
         _productImporter = productImporter;
+        _productServer = productServer;
     }
 
     [HttpGet]
@@ -23,4 +25,16 @@ public class ProductsController : ControllerBase
             return NotFound("No products found.");
         return Ok(products);
     } 
+    
+    //[HttpGet("products-from-store/{storeId}")]
+    [HttpGet("products-all")]
+    public async Task<IActionResult> GetAllProducts()
+    {
+        var products = await _productServer.GetProductsFromDb();
+        if (products.Count == 0)
+            return NotFound("No products found.");
+        return Ok(products);
+
+    }
+   
 }
