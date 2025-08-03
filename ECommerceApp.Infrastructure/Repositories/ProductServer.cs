@@ -25,8 +25,8 @@ public class ProductServer
                ProductName = product.ProductName,
                Description = product.Description,
                ImageUrl = product.ImageUrl,
-               Ingridients = product.Ingridients,
-               Store = product.Store,
+               Ingredients = product.Ingredients,
+               //Store = product.Store,
                Quantity = product.Quantity,
                UnitPrice = product.UnitPrice,
            };

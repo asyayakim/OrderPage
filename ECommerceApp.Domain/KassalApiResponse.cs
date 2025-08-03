@@ -7,6 +7,7 @@ public class KassalApiResponse
 }
 public class KassalProduct
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Brand { get; set; }
     public string Image { get; set; }
@@ -15,9 +16,9 @@ public class KassalProduct
     [JsonProperty("current_price")]
     public decimal CurrentPrice { get; set; }
     public Nutrition[] Nutrition { get; set; }
-    public Store Store { get; set; } 
+    public KassalStore Store { get; set; } 
 }
-public class Nutrition
+public class KassalNutrition
 {
     [JsonProperty("display_name")]
     public string DisplayName { get; set; }
@@ -25,7 +26,10 @@ public class Nutrition
     public string Unit { get; set; }
 }
 
-public class Store
+public class KassalStore
 {
     public string Name { get; set; }
+    public string Code { get; set; }
+    public string Logo { get; set; }
+    public string Url { get; set; }
 }

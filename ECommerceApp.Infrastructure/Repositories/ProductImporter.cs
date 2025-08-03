@@ -3,6 +3,7 @@ using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 using Order.Infrastructure.Persistence;
 
 namespace Order.Infrastructure.Repositories;
@@ -22,7 +23,7 @@ public class ProductImporter
         _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
     }
 
-    public async Task<List<Products>>  ImportProducts(int pageNumber, int pageSize )
+    public async Task<List<Product>>  ImportProducts(int pageNumber, int pageSize )
     {
         var response = await _httpClient.GetAsync($"https://kassal.app/api/v1/products?page={pageNumber}&per_page={pageSize}");
         response.EnsureSuccessStatusCode();
@@ -32,18 +33,65 @@ public class ProductImporter
 
         foreach (var apiProduct in apiResponse.Data)
         {
-            var product = new Products
+            var storeName = apiProduct.Store?.Name?.Trim() ?? "Unknown";
+            var storeCode = apiProduct.Store?.Code;
+            var store = await _context.Stores
+                .FirstOrDefaultAsync(s => s.Name == storeName && (storeCode == null || s.Code == storeCode));
+            if (store == null)
             {
-                UnitPrice = apiProduct.CurrentPrice,
-                ProductName = apiProduct.Name,
-                ImageUrl = apiProduct.Image ?? "Unknown",
-                Description = apiProduct.Description
-                 ?? "No description available",
-                Store = apiProduct.Store?.Name ?? "Unknown",
-                Ingridients = apiProduct.Ingredients
-                ?? "Unknown"
-            };
+                store = new Store
+                {
+                    Name = storeName,
+                    Code = storeCode,
+                    Logo = apiProduct.Store?.Logo,
+                    Url = apiProduct.Store?.Url
+                };
+                _context.Stores.Add(store);
+                await _context.SaveChangesAsync();
+            }
+            var product = await _context.Products
+                .Include(p => p.Nutrition)
+                .Include(p => p.Store)
+                .FirstOrDefaultAsync(p =>
+                    p.ProductName == apiProduct.Name &&
+                    p.Brand == apiProduct.Brand &&
+                    p.StoreId == store.StoreId);
 
+            if (product == null)
+            {
+                product = new Product
+                {
+                    ProductName = apiProduct.Name,
+                    Brand = apiProduct.Brand ?? "Unknown",
+                    ImageUrl = apiProduct.Image ?? "Unknown",
+                    Description = apiProduct.Description ?? "No description available",
+                    Ingredients = apiProduct.Ingredients ?? "Unknown",
+                    UnitPrice = apiProduct.CurrentPrice,
+                    StoreId = store.StoreId,
+                    Store = store,
+                    ExternalId = apiProduct.Id
+                };
+                _context.Products.Add(product);
+            }
+            if (product.Nutrition.Any())
+            {
+                _context.Nutritions.RemoveRange(product.Nutrition);
+            }
+            if (apiProduct.Nutrition != null)
+            {
+                foreach (var nut in apiProduct.Nutrition)
+                {
+                    var name = string.IsNullOrWhiteSpace(nut.DisplayName) ? "Unknown" : nut.DisplayName.Trim();
+                    product.Nutrition.Add(new Nutrition
+                    {
+                        DisplayName = name,
+                        Amount = nut.Amount ?? null,
+                        Unit = nut.Unit ?? null,
+                        ProductId = product.ProductId
+                    });
+                }
+                await _context.SaveChangesAsync();
+            }
             try
             {
                 await CreateEmbedding(product);
@@ -52,20 +100,22 @@ public class ProductImporter
             {
                 Console.WriteLine($"embedding failed: {ex.Message}");
             }
-            _context.Products.Add(product);
         }
 
         await _context.SaveChangesAsync();
-        return _context.Products.ToList();
+        return await _context.Products
+            .Include(p => p.Store)
+            .Include(p => p.Nutrition)
+            .ToListAsync();
     }
 
-    private async Task CreateEmbedding(Products product)
+    private async Task CreateEmbedding(Product product)
     {
         var payload = new
         {
             name = product.ProductName,
             description = product.Description, 
-            ingredients = product.Ingridients
+            ingredients = product.Ingredients
         };
 
         var response = await _httpClient.PostAsJsonAsync("http://localhost:5050/save_product_with_embedding", payload);

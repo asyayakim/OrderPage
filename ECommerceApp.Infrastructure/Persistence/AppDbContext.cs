@@ -12,7 +12,9 @@ public class AppDbContext : IdentityDbContext<UserData, AppRole, Guid>
         : base(options)
     {
     }
-    public DbSet<Products> Products { get; set; }
+    public DbSet<Store> Stores { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Nutrition> Nutritions { get; set; }
     public DbSet<ProductOrder> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Customer> Customers { get; set; }
@@ -40,6 +42,11 @@ public class AppDbContext : IdentityDbContext<UserData, AppRole, Guid>
                 .HasColumnType("vector");
             entity.Property(e => e.Metadata).HasColumnName("metadata");
         });  
-        
+        modelBuilder.Entity<Product>()
+            .HasMany(p => p.Nutrition)
+            .WithOne(n => n.Product)
+            .HasForeignKey(n => n.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
     }
 }

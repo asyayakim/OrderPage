@@ -26,7 +26,7 @@ public class ProductsController : ControllerBase
         return Ok(products);
     } 
     
-    //[HttpGet("products-from-store/{storeId}")]
+    [HttpGet("products-from-store/{storeId}")]
     [HttpGet("products-all")]
     public async Task<IActionResult> GetAllProducts()
     {
