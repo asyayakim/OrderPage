@@ -128,8 +128,15 @@ builder.Services.AddScoped<UserRepository>();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
+if (app.Environment.IsDevelopment() || enableSwaggerInProd)
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
+    });
+}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
