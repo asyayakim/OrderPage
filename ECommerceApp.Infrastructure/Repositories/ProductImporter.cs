@@ -73,10 +73,10 @@ public class ProductImporter
                 };
                 _context.Products.Add(product);
             }
-            if (product.Nutrition.Any())
-            {
-                _context.Nutritions.RemoveRange(product.Nutrition);
-            }
+            // if (product.Nutrition.Any())
+            // {
+            //     _context.Nutritions.RemoveRange(product.Nutrition);
+            // }
             if (apiProduct.Nutrition != null)
             {
                 foreach (var nut in apiProduct.Nutrition)
@@ -111,11 +111,24 @@ public class ProductImporter
 
     private async Task CreateEmbedding(Product product)
     {
+        var nutritionList = product.Nutrition?
+            .Select(n => new
+            {
+                displayName = n.DisplayName,
+                amount = n.Amount,
+                unit = n.Unit
+            })
+            .ToList();
         var payload = new
         {
             name = product.ProductName,
-            description = product.Description, 
-            ingredients = product.Ingredients
+            brand = product.Brand,
+            store = product.Store?.Name,
+            unit_price = product.UnitPrice,
+            external_id = product.ExternalId,
+            description = product.Description,
+            ingredients = product.Ingredients,
+            nutrition = nutritionList
         };
 
         var response = await _httpClient.PostAsJsonAsync("http://localhost:5050/save_product_with_embedding", payload);
