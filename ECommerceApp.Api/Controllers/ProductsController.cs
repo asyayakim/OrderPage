@@ -1,3 +1,4 @@
+using ECommerceApp.ApplicationLayer.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Order.Infrastructure.Repositories;
 
@@ -26,11 +27,11 @@ public class ProductsController : ControllerBase
         return Ok(products);
     } 
     
-    [HttpGet("products-from-store/{storeId}")]
-    [HttpGet("products-all")]
-    public async Task<IActionResult> GetAllProducts()
+    //[HttpGet("products-from-store/{storeId}")]
+    [HttpGet("products-frontend")]
+    public async Task<IActionResult> GetAllProductsForFrontend([FromQuery]int pageNumber = 1, int pageSize = 10)
     {
-        var products = await _productServer.GetProductsFromDb();
+        var products = await _productServer.GetProductsFromDb(pageNumber, pageSize);
         if (products.Count == 0)
             return NotFound("No products found.");
         return Ok(products);

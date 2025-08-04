@@ -30,7 +30,8 @@ builder.Services.AddControllers()
     .AddJsonOptions(o =>
     {
         o.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-        o.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        o.JsonSerializerOptions.DefaultIgnoreCondition =
+            System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
     });
 
 builder.Services.AddSwaggerGen(options =>
@@ -58,15 +59,14 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 builder.Services.AddIdentity<UserData, AppRole>()
-    .AddEntityFrameworkStores<AppDbContext>() 
+    .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
         o => o.UseVector())
-    );
-
+);
 
 
 builder.Services.AddIdentityCore<UserData>(options =>
@@ -81,40 +81,41 @@ builder.Services.AddIdentityCore<UserData>(options =>
     .AddSignInManager<SignInManager<UserData>>();
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:JwtSecret"]!)),
-        ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
-        ValidateAudience = true,
-        ValidAudience = "authenticated",
-        ValidateLifetime = true,
-        RoleClaimType = ClaimTypes.Role,
-        NameClaimType = ClaimTypes.NameIdentifier,
-        ClockSkew = TimeSpan.Zero
-    };
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:JwtSecret"]!)),
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
+            ValidateAudience = true,
+            ValidAudience = "authenticated",
+            ValidateLifetime = true,
+            RoleClaimType = ClaimTypes.Role,
+            NameClaimType = ClaimTypes.NameIdentifier,
+            ClockSkew = TimeSpan.Zero
+        };
 
-    options.Events = new JwtBearerEvents
-    {
-        OnAuthenticationFailed = context =>
+        options.Events = new JwtBearerEvents
         {
-            Console.WriteLine($"Authentication failed: {context.Exception}");
-            return Task.CompletedTask;
-        },
-        OnTokenValidated = context =>
-        {
-            Console.WriteLine("Token validated");
-            return Task.CompletedTask;
-        }
-    };
-});
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"Authentication failed: {context.Exception}");
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("Token validated");
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 builder.Services.AddAuthorization();
 
@@ -137,6 +138,10 @@ if (app.Environment.IsDevelopment() || enableSwaggerInProd)
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
     });
 }
+
+// app.UseSwagger();
+// app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
+//
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

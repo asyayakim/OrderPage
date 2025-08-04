@@ -13,25 +13,40 @@ public class ProductServer
         _context = context;
     }
 
-    public async Task<List<ProductToSendDto>> GetProductsFromDb()
+    public async Task<List<ProductToSendDto>> GetProductsFromDb(int pageNumber, int pageSize)
     {
-       var products = await _context.Products.ToListAsync();
-       var productsToSend = new List<ProductToSendDto>();
-       foreach (var product in products)
-       {
-           var productFromList = new ProductToSendDto()
-           {
-               ProductId = product.ProductId,
-               ProductName = product.ProductName,
-               Description = product.Description,
-               ImageUrl = product.ImageUrl,
-               Ingredients = product.Ingredients,
-               //Store = product.Store,
-               Quantity = product.Quantity,
-               UnitPrice = product.UnitPrice,
-           };
-           productsToSend.Add(productFromList);
-       }
-       return productsToSend;
+        return await _context.Products
+            .AsNoTracking()
+            .Include(p => p.Store)
+            .Include(p => p.Nutrition)
+            .OrderBy(p => p.ProductName)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(p => new ProductToSendDto
+            {
+                ProductId = p.ProductId,
+                Quantity = p.Quantity,
+                UnitPrice = p.UnitPrice,
+                ProductName = p.ProductName,
+                Brand = p.Brand,
+                ImageUrl = p.ImageUrl,
+                Description = p.Description,
+                Ingredients = p.Ingredients,
+                Store = new StoreDto
+                {
+                    StoreId = p.Store.StoreId,
+                    Name = p.Store.Name,
+                    Code = p.Store.Code,
+                    Logo = p.Store.Logo,
+                    Url = p.Store.Url
+                },
+                Nutrition = p.Nutrition.Select(n => new NutritionDto
+                {
+                    DisplayName = n.DisplayName,
+                    Amount = n.Amount,
+                    Unit = n.Unit
+                }).ToList()
+            })
+            .ToListAsync();
     }
 }
