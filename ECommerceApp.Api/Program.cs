@@ -126,7 +126,16 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<PlaceOrderHandler>();
 builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<UserRepository>();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 var app = builder.Build();
 
 bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
@@ -144,6 +153,8 @@ if (app.Environment.IsDevelopment() || enableSwaggerInProd)
 //
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend"); 
 app.UseAuthentication();
 app.UseAuthorization();
 
