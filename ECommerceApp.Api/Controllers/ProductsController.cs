@@ -35,7 +35,15 @@ public class ProductsController : ControllerBase
         if (products.Count == 0)
             return NotFound("No products found.");
         return Ok(products);
+    }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProduct(Guid id)
+    {
+        var product = await _productServer.GetProductById(id);
+        if (product == null)
+            return NotFound("No products found.");
+        return Ok(product);
     }
    
 }
