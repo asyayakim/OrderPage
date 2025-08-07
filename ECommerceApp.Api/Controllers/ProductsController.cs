@@ -27,7 +27,7 @@ public class ProductsController : ControllerBase
         return Ok(products);
     } 
     
-    //[HttpGet("products-from-store/{storeId}")]
+   
     [HttpGet("products-frontend")]
     public async Task<IActionResult> GetAllProductsForFrontend([FromQuery]int pageNumber = 1, int pageSize = 10)
     {

@@ -24,4 +24,15 @@ public class StoresController : ControllerBase
             return NotFound("No stores found.");
         return Ok(stores);
     }
+
+    [HttpGet("products-from-store/{storeId}")]
+    public async Task<IActionResult> GetProductsFromStore(Guid storeId)
+    {
+        var products = await _storeService.GetAllProductsByStoreAsync(storeId);
+        if (products == null)
+        {
+            return NotFound("No products found.");
+        }
+        return Ok(products);
+    }
 }

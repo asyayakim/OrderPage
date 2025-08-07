@@ -18,4 +18,13 @@ public class StoreRepository : IStoreRepository
     {
         return await _context.Stores.ToListAsync();
     }
+
+    public async Task<List<Product?>> GetAllProductsByStoreIdAsync(Guid storeId)
+    {
+        return (await _context.Products
+            .Include(p => p.Store)
+            .Include(p => p.Nutrition)
+            .Where(p => p.Store.StoreId == storeId)
+            .ToListAsync())!;
+    }
 }
