@@ -45,5 +45,4 @@ public class ProductsController : ControllerBase
             return NotFound("No products found.");
         return Ok(product);
     }
-   
 }

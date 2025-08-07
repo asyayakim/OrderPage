@@ -21,6 +21,7 @@
       <ProjectReference Include="..\ECommerce.Tests\ECommerce.Tests.csproj" />
       <ProjectReference Include="..\ECommerceApp.ApplicationLayer\ECommerceApp.ApplicationLayer.csproj" />
       <ProjectReference Include="..\ECommerceApp.Infrastructure\ECommerceApp.Infrastructure.csproj" />
+        
     </ItemGroup>
 
 </Project>

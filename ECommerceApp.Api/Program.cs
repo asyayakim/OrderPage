@@ -5,6 +5,7 @@ using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.ApplicationLayer.Services;
 using ECommerceApp.Domain;
 using ECommerceApp.Domain.Discounts;
+using ECommerceApp.Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ProductImporter>();
 builder.Services.AddScoped<ProductServer>();
+builder.Services.AddScoped<IStoreService, StoreService>();
+builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
@@ -150,7 +153,7 @@ if (app.Environment.IsDevelopment() || enableSwaggerInProd)
 
 // app.UseSwagger();
 // app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
-//
+
 
 app.UseHttpsRedirection();
 
