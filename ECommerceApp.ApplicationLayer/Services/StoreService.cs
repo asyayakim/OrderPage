@@ -14,10 +14,24 @@ public class StoreService : IStoreService
     }
 
 
-    public async Task<List<string>> GetAllStoreNamesAsync()
+    public async Task<List<StoreDto>> GetAllStoreNamesAsync()
     {
         var stores = await _storeRepository.GetAllAsync();
-        return stores.Select(s => s.Name).ToList();
+        var storesToSend = new List<StoreDto>();
+        foreach (var store in stores)
+        {
+            var dto = new StoreDto
+            {
+                StoreId = store.StoreId,
+                Name = store.Name,
+                Code = store.Code,
+                Logo = store.Logo,
+                Url = store.Url
+            };
+            storesToSend.Add(dto);
+        }
+
+        return storesToSend;
     }
 
     public async Task<List<ProductToSendDto?>> GetAllProductsByStoreAsync(Guid storeId)

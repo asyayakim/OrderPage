@@ -4,6 +4,6 @@ namespace ECommerceApp.ApplicationLayer.Interfaces;
 
 public interface IStoreService
 {
-    Task<List<string>> GetAllStoreNamesAsync();
+    Task<List<StoreDto>> GetAllStoreNamesAsync();
     Task<List<ProductToSendDto?>> GetAllProductsByStoreAsync(Guid storeid);
 }
