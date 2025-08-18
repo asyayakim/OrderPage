@@ -13,14 +13,17 @@ public class ProductImporter
     private readonly HttpClient _httpClient;
     private readonly AppDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly ProductCategorizer _productCategorizer;
 
-    public ProductImporter(AppDbContext context, IConfiguration configuration)
+    public ProductImporter(AppDbContext context, IConfiguration configuration, ProductCategorizer productCategorizer)
     {
         _httpClient = new HttpClient();
         _context = context;
         _configuration = configuration;
+        _productCategorizer = productCategorizer;
         var apiKey = _configuration["KassalApiKey:ApiKey"];
         _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+        
     }
 
     public async Task<List<Product>>  ImportProducts(int pageNumber, int pageSize )
@@ -30,6 +33,7 @@ public class ProductImporter
 
         var content = await response.Content.ReadAsStringAsync();
         var apiResponse = JsonConvert.DeserializeObject<KassalApiResponse>(content);
+        
 
         foreach (var apiProduct in apiResponse.Data)
         {
@@ -69,7 +73,8 @@ public class ProductImporter
                     UnitPrice = apiProduct.CurrentPrice,
                     StoreId = store.StoreId,
                     Store = store,
-                    ExternalId = apiProduct.Id
+                    ExternalId = apiProduct.Id,
+                    Category = _productCategorizer.GetCategory(apiProduct)
                 };
                 _context.Products.Add(product);
             }

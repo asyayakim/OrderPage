@@ -28,6 +28,8 @@ builder.Services.AddScoped<ProductImporter>();
 builder.Services.AddScoped<ProductServer>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
+builder.Services.AddScoped<ProductCategorizer>();
+
 
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
@@ -141,18 +143,18 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
-bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
-if (app.Environment.IsDevelopment() || enableSwaggerInProd)
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
-    });
-}
-
-// app.UseSwagger();
-// app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
+// bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
+// if (app.Environment.IsDevelopment() || enableSwaggerInProd)
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI(c =>
+//     {
+//         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
+//     });
+// }
+//
+app.UseSwagger();
+app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
 
 
 app.UseHttpsRedirection();
