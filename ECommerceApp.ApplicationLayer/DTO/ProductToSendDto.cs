@@ -25,6 +25,7 @@ public class ProductToSendDto
         public string? Brand { get; set; }
         public string? ImageUrl { get; set; }
         public string Description { get; set; }
+        public string? Category { get; set; }
         public string? Ingredients { get; set; }
         public StoreDto Store { get; set; }
         public List<NutritionDto> Nutrition { get; set; } = new();
