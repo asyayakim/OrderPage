@@ -143,19 +143,19 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
-// bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
-// if (app.Environment.IsDevelopment() || enableSwaggerInProd)
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI(c =>
-//     {
-//         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
-//     });
-// }
+bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
+if (app.Environment.IsDevelopment() || enableSwaggerInProd)
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
+    });
+}
+//local test
+// app.UseSwagger();
+// app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
 //
-app.UseSwagger();
-app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
-
 
 app.UseHttpsRedirection();
 
@@ -167,7 +167,7 @@ app.MapControllers();
 
 app.Run();
 
-app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
-
+// app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
+//
 app.MapControllers();
 app.Run();
