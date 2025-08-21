@@ -12,14 +12,13 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
         var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true)
+            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../ECommerceApp.Api"))
+            .AddJsonFile("appsettings.json", optional: false)
             .Build();
-
-        var connectionString = config.GetConnectionString("DefaultConnection")
-                               ?? "Host=localhost;Port=5432;Database=ecommerce;Username=postgres;Password=postgres"; 
-
-
+        
+        var connectionString = config.GetConnectionString("DefaultConnection") ??
+                               Environment.GetEnvironmentVariable("ConnectionStrings:DefaultConnection") ??
+                               Environment.GetEnvironmentVariable("DEFAULT_CONNECTION");
         optionsBuilder.UseNpgsql(connectionString, o => o.UseVector());
 
         return new AppDbContext(optionsBuilder.Options);
