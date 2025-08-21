@@ -165,9 +165,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
-
+// app.Run();
+//
 // app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
 //
-app.MapControllers();
+// app.MapControllers();
 app.Run();
