@@ -23,17 +23,17 @@ public class ProductImporter
         _productCategorizer = productCategorizer;
         var apiKey = _configuration["KassalApiKey:ApiKey"];
         _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-        
     }
 
-    public async Task<List<Product>>  ImportProducts(int pageNumber, int pageSize )
+    public async Task<List<Product>> ImportProducts(int pageNumber, int pageSize)
     {
-        var response = await _httpClient.GetAsync($"https://kassal.app/api/v1/products?page={pageNumber}&per_page={pageSize}");
+        var response =
+            await _httpClient.GetAsync($"https://kassal.app/api/v1/products?page={pageNumber}&per_page={pageSize}");
         response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadAsStringAsync();
         var apiResponse = JsonConvert.DeserializeObject<KassalApiResponse>(content);
-        
+
 
         foreach (var apiProduct in apiResponse.Data)
         {
@@ -53,6 +53,7 @@ public class ProductImporter
                 _context.Stores.Add(store);
                 await _context.SaveChangesAsync();
             }
+
             var product = await _context.Products
                 .Include(p => p.Nutrition)
                 .Include(p => p.Store)
@@ -78,6 +79,7 @@ public class ProductImporter
                 };
                 _context.Products.Add(product);
             }
+
             // if (product.Nutrition.Any())
             // {
             //     _context.Nutritions.RemoveRange(product.Nutrition);
@@ -95,8 +97,10 @@ public class ProductImporter
                         ProductId = product.ProductId
                     });
                 }
+
                 await _context.SaveChangesAsync();
             }
+
             try
             {
                 await CreateEmbedding(product);
@@ -136,7 +140,9 @@ public class ProductImporter
             nutrition = nutritionList
         };
 
-        var response = await _httpClient.PostAsJsonAsync("http://localhost:5050/save_product_with_embedding", payload);
+        //var response = await _httpClient.PostAsJsonAsync("http://localhost:5050/save_product_with_embedding", payload);
+
+        var response = await _httpClient.PostAsJsonAsync("https://rag-61kq.onrender.com/save_product_with_embedding", payload);
 
         if (!response.IsSuccessStatusCode)
             throw new Exception("Failed to save embedding to Flask service");
