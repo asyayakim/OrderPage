@@ -27,4 +27,12 @@ public class StoreRepository : IStoreRepository
             .Where(p => p.Store.StoreId == storeId)
             .ToListAsync())!;
     }
+
+    public async Task<List<Product>> GetAllTopSellersAsync()
+    {
+        return (await _context.Products
+            .Include(p => p.Store)
+            .Include(p => p.Nutrition)
+            .Take(5).ToListAsync())!;
+    }
 }
