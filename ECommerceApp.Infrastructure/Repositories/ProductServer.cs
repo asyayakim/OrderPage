@@ -87,4 +87,9 @@ public class ProductServer
             .FirstOrDefaultAsync();
     }
 
+    public async Task<object?> GetOneAsync()
+    {
+        var product = await _context.Products.FirstOrDefaultAsync();
+        return product;
+    }
 }

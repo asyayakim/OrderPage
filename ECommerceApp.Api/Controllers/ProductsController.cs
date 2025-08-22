@@ -57,4 +57,12 @@ public class ProductsController : ControllerBase
             return NotFound("No products found.");
         return Ok(topProducts);
     }
+    
+    //final logic is not implemented
+    [HttpGet("product-of-the-week")]
+    public async Task<IActionResult> GetProductOfTheWeek()
+    {
+        var product = await _productServer.GetOneAsync();
+        return Ok(product);
+    }
 }
