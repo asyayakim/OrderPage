@@ -1,4 +1,5 @@
 using ECommerceApp.ApplicationLayer.DTO;
+using ECommerceApp.ApplicationLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Order.Infrastructure.Repositories;
 
@@ -10,11 +11,13 @@ public class ProductsController : ControllerBase
 {
     private readonly ProductImporter _productImporter;
     private readonly ProductServer _productServer;
+    private readonly IStoreService _storeService;
 
-    public ProductsController(ProductImporter productImporter, ProductServer productServer)
+    public ProductsController(ProductImporter productImporter, ProductServer productServer, IStoreService storeService)
     {
         _productImporter = productImporter;
         _productServer = productServer;
+        _storeService = storeService;
     }
 
     [HttpGet]
@@ -44,5 +47,14 @@ public class ProductsController : ControllerBase
         if (product == null)
             return NotFound("No products found.");
         return Ok(product);
+    }
+
+    [HttpGet("top-sellers")]
+    public async Task<IActionResult> GetTopSellers()
+    {
+        var topProducts = await _storeService.GetTopSellersAsync();
+        if (topProducts == null)
+            return NotFound("No products found.");
+        return Ok(topProducts);
     }
 }
