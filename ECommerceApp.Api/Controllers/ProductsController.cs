@@ -75,4 +75,13 @@ public class ProductsController : ControllerBase
             return NotFound("No products found.");
         return Ok(categories);
     }
+
+    [HttpGet("products-by-category")]
+    public async Task<IActionResult> GetProductsByCategory([FromQuery] string category,int pageNumber = 1, int pageSize = 1)
+    {
+        var products = await _storeService.GetProductsByCategory(category, pageNumber, pageSize);
+        if (products ==  null)
+            return NotFound("No products found.");
+        return Ok(products);
+    }
 }

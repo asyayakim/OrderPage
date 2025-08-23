@@ -33,7 +33,7 @@ public class StoreRepository : IStoreRepository
         return (await _context.Products
             .Include(p => p.Store)
             .Include(p => p.Nutrition)
-            .Take(5).ToListAsync())!;
+            .Take(4).ToListAsync())!;
     }
 
     public async Task<List<string>> GetAllCategoriesAsync()
@@ -43,5 +43,14 @@ public class StoreRepository : IStoreRepository
             .Select(p => p.Category)
             .Distinct()
             .ToListAsync();
+    }
+
+    public async Task<List<Product>> GetAllByCategoryAsync(string category, int pageNumber, int pageSize)
+    {
+        return await _context.Products
+            .Include(p => p.Store)
+            .Include(p => p.Nutrition).Where(p => p.Category == category)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize).AsNoTracking().ToListAsync();
     }
 }
