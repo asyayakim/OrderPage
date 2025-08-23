@@ -131,9 +131,9 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<PlaceOrderHandler>();
 builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<UserRepository>();
-var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
-
-builder.Services.AddCors(options =>
+var allowedOrigins = builder.Configuration["AllowedOrigins"]?
+                         .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                     ?? Array.Empty<string>();builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
         policy.WithOrigins(allowedOrigins!)
