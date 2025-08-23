@@ -131,16 +131,17 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<PlaceOrderHandler>();
 builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<UserRepository>();
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5173")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins(allowedOrigins!)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
 });
+
 var app = builder.Build();
 
 bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
