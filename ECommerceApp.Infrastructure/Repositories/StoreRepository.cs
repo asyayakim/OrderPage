@@ -28,11 +28,20 @@ public class StoreRepository : IStoreRepository
             .ToListAsync())!;
     }
 
-    public async Task<List<Product>> GetAllTopSellersAsync()
+    public async Task<List<Product?>> GetAllTopSellersAsync()
     {
         return (await _context.Products
             .Include(p => p.Store)
             .Include(p => p.Nutrition)
             .Take(5).ToListAsync())!;
+    }
+
+    public async Task<List<string>> GetAllCategoriesAsync()
+    {
+        return await _context.Products
+            .Where(p => !string.IsNullOrEmpty(p.Category))
+            .Select(p => p.Category)
+            .Distinct()
+            .ToListAsync();
     }
 }

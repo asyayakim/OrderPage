@@ -65,4 +65,14 @@ public class ProductsController : ControllerBase
         var product = await _productServer.GetOneAsync();
         return Ok(product);
     }
+    
+    
+    [HttpGet("categories")]
+    public async Task<IActionResult> GetCategories()
+    {
+        var categories = await _storeService.GetCategoriesAsync();
+        if (categories == null)
+            return NotFound("No products found.");
+        return Ok(categories);
+    }
 }

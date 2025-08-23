@@ -54,8 +54,14 @@ public class StoreService : IStoreService
 
         return productToSendDto;
     }
-    
-    
+
+    public async Task<object?> GetCategoriesAsync()
+    {
+        var categories = await _storeRepository.GetAllCategoriesAsync();
+        return categories;;
+    }
+
+
     private static List<ProductToSendDto> ProductToSendDtos(List<Product?> products)
     {
         var productToSendDto = new List<ProductToSendDto>();
