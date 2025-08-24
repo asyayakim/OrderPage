@@ -45,12 +45,32 @@ public class StoreRepository : IStoreRepository
             .ToListAsync();
     }
 
-    public async Task<List<Product>> GetAllByCategoryAsync(string category, int pageNumber, int pageSize)
+    public async Task<List<Product>> GetAllByCategoryAsync(string? category, int pageNumber, int pageSize, decimal? minPrice, decimal? maxPrice)
     {
-        return await _context.Products
+        var query =  _context.Products
             .Include(p => p.Store)
-            .Include(p => p.Nutrition).Where(p => p.Category == category)
+            .Include(p => p.Nutrition)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(category))
+        {
+            query = query.Where(p => p.Category == category);
+        }
+
+        if (minPrice.HasValue)
+        {
+            query = query.Where(p => p.UnitPrice >= minPrice.Value);
+        }
+
+        if (maxPrice.HasValue)
+        {
+            query = query.Where(p => p.UnitPrice <= maxPrice.Value);
+        }
+
+        return await query
             .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize).AsNoTracking().ToListAsync();
+            .Take(pageSize)
+            .AsNoTracking()
+            .ToListAsync();
     }
 }

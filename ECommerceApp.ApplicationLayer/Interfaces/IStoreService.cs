@@ -8,5 +8,5 @@ public interface IStoreService
     Task<List<ProductToSendDto?>> GetAllProductsByStoreAsync(Guid storeid);
     Task<object?> GetTopSellersAsync();
     Task<object?> GetCategoriesAsync();
-    Task<object?> GetProductsByCategory(string category, int pageNumber, int pageSize);
+    Task<object?> GetProductsByCategory(string? category, int pageNumber, int pageSize, decimal? minPrice, decimal? maxPrice);
 }
