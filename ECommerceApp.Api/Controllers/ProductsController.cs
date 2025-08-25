@@ -90,7 +90,7 @@ public class ProductsController : ControllerBase
     {
         var products = await _storeService.GetFeaturedProducts(limit);
         if (products ==  null)
-            return NotFound("No products found.");
-        return Ok(products); 
+            return NotFound("No products found .");
+        return Ok(products);
     }
 }
