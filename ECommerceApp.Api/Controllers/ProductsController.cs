@@ -77,9 +77,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("products-by-category")]
-    public async Task<IActionResult> GetProductsByCategory([FromQuery] string? category,int pageNumber = 1, int pageSize = 1, decimal? minPrice = null, decimal? maxPrice = null)
+    public async Task<IActionResult> GetProductsByCategory([FromQuery] string? category,int pageNumber = 1, int pageSize = 1, decimal? minPrice = null, decimal? maxPrice = null, string sortBy= null)
     {
-        var products = await _storeService.GetProductsByCategory(category, pageNumber, pageSize, minPrice, maxPrice);
+        var products = await _storeService.GetProductsByCategory(category, pageNumber, pageSize, minPrice, maxPrice, sortBy);
         if (products ==  null)
             return NotFound("No products found.");
         return Ok(products);

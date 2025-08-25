@@ -61,9 +61,9 @@ public class StoreService : IStoreService
         return categories;;
     }
 
-    public async Task<object?> GetProductsByCategory(string? category, int pageNumber, int pageSize, decimal? minPrice, decimal? maxPrice)
+    public async Task<object?> GetProductsByCategory(string? category, int pageNumber, int pageSize, decimal? minPrice, decimal? maxPrice, string? sortBy)
     {
-        var productToSend = await _storeRepository.GetAllByCategoryAsync(category, pageNumber, pageSize, minPrice, maxPrice);
+        var productToSend = await _storeRepository.GetAllByCategoryAsync(category, pageNumber, pageSize, minPrice, maxPrice, sortBy);
         var productToSendDto = ProductToSendDtos(productToSend);
         return productToSendDto;
     }

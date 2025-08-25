@@ -45,7 +45,8 @@ public class StoreRepository : IStoreRepository
             .ToListAsync();
     }
 
-    public async Task<List<Product>> GetAllByCategoryAsync(string? category, int pageNumber, int pageSize, decimal? minPrice, decimal? maxPrice)
+    public async Task<List<Product>> GetAllByCategoryAsync(string? category, int pageNumber, int pageSize,
+        decimal? minPrice, decimal? maxPrice, string? sortBy)
     {
         var query =  _context.Products
             .Include(p => p.Store)
@@ -66,6 +67,15 @@ public class StoreRepository : IStoreRepository
         {
             query = query.Where(p => p.UnitPrice <= maxPrice.Value);
         }
+
+        query = sortBy switch
+        {
+            "price_asc" => query.OrderBy(p => p.UnitPrice),
+            "price_desc" => query.OrderByDescending(p => p.UnitPrice),
+            "name_asc" => query.OrderBy(p => p.ProductName),
+            "name_desc" => query.OrderByDescending(p => p.ProductName),
+            _ => query.OrderByDescending(p => p.ProductId)
+        };
 
         return await query
             .Skip((pageNumber - 1) * pageSize)
