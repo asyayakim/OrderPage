@@ -68,6 +68,13 @@ public class StoreService : IStoreService
         return productToSendDto;
     }
 
+    public async Task<object?> GetFeaturedProducts(int limit)
+    {
+        var productToSend = await _storeRepository.GetAllFeaturedAsync(limit);
+        var productToSendDto = ProductToSendDtos(productToSend);
+        return productToSendDto;
+    }
+
 
     private static List<ProductToSendDto> ProductToSendDtos(List<Product?> products)
     {

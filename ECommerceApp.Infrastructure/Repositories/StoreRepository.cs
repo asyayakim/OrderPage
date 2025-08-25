@@ -83,4 +83,13 @@ public class StoreRepository : IStoreRepository
             .AsNoTracking()
             .ToListAsync();
     }
+
+    public async Task<List<Product>> GetAllFeaturedAsync(int limit)
+    {
+        return await _context.Products.Include(p => p.Store)
+            .Include(p => p.Nutrition)
+            .Take(limit)
+            .OrderBy(p => p.UnitPrice)
+            .ToListAsync();
+    }
 }

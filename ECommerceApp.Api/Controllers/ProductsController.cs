@@ -84,4 +84,13 @@ public class ProductsController : ControllerBase
             return NotFound("No products found.");
         return Ok(products);
     }
+
+    [HttpGet("recent")]
+    public async Task<IActionResult> GetFeaturedProducts([FromQuery]int limit)
+    {
+        var products = await _storeService.GetFeaturedProducts(limit);
+        if (products ==  null)
+            return NotFound("No products found.");
+        return Ok(products); 
+    }
 }

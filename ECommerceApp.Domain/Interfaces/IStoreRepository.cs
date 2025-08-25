@@ -7,4 +7,5 @@ public interface IStoreRepository
     Task<List<Product?>> GetAllTopSellersAsync();
     Task<List<string>> GetAllCategoriesAsync();
     Task<List<Product>> GetAllByCategoryAsync(string? category, int pageNumber, int pageSize,  decimal? minPrice, decimal? maxPrice, string? sortBy);
+    Task<List<Product>> GetAllFeaturedAsync(int limit);
 }

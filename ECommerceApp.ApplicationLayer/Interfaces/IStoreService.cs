@@ -9,4 +9,5 @@ public interface IStoreService
     Task<object?> GetTopSellersAsync();
     Task<object?> GetCategoriesAsync();
     Task<object?> GetProductsByCategory(string? category, int pageNumber, int pageSize, decimal? minPrice, decimal? maxPrice, string? sortBy);
+    Task<object?> GetFeaturedProducts(int limit);
 }
