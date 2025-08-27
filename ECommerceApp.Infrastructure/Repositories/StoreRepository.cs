@@ -92,4 +92,26 @@ public class StoreRepository : IStoreRepository
             .OrderBy(p => p.UnitPrice)
             .ToListAsync();
     }
+
+    public async Task<Dictionary<string, string>> GetImageUrlByCategoryName(List<string> categories)
+    {
+        var imageUrl = await _context.Products
+            .Where(p => !string.IsNullOrEmpty(p.Category) && categories.Contains(p.Category))
+            .GroupBy(p => p.Category).Select(g => new
+            {
+                Category = g.Key, ImageUrl = g.Select(p => p.ImageUrl).FirstOrDefault()
+            }).ToDictionaryAsync(x => x.Category, x => x.ImageUrl);
+        return imageUrl!;
+    }
+
+    public async Task<Dictionary<string, int>> GetTotalProductsByCategoryAsync(List<string> categories)
+    {
+        var result = await _context.Products
+            .Where(p => !string.IsNullOrEmpty(p.Category) && categories.Contains(p.Category))
+            .GroupBy(p => p.Category)
+            .Select(g => new { Category = g.Key, ToralProductsByCategory = g.Count() })
+            .ToDictionaryAsync(x => x.Category, x => x.ToralProductsByCategory);
+
+        return result;
+    }
 }

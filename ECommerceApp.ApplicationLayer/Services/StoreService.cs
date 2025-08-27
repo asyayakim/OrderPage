@@ -75,6 +75,25 @@ public class StoreService : IStoreService
         return productToSendDto;
     }
 
+    public async Task<object?> GetCategoriesWithTotalProductsAsync()
+    {
+        var categories =  await _storeRepository.GetAllCategoriesAsync();
+        var totalProducts = await _storeRepository.GetTotalProductsByCategoryAsync(categories);
+        var imageUrls = await _storeRepository.GetImageUrlByCategoryName(categories);
+        
+        var result = new List<CategoryWithTotalProductsDto>();
+        foreach (var p in  categories)
+        {
+            result.Add(new CategoryWithTotalProductsDto
+            {
+                Category = p,
+                ImageUrl = imageUrls.GetValueOrDefault(p),
+                ToralProductsByCategory = totalProducts.GetValueOrDefault(p, 0)
+            });
+        }
+        return result;
+    }
+
 
     private static List<ProductToSendDto> ProductToSendDtos(List<Product?> products)
     {

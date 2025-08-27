@@ -93,4 +93,13 @@ public class ProductsController : ControllerBase
             return NotFound("No products found .");
         return Ok(products);
     }
+
+    [HttpGet("categories-with-total-products")]
+    public async Task<IActionResult> GetCategoriesTotalProducts()
+    {
+        var products = await _storeService.GetCategoriesWithTotalProductsAsync();
+        if (products ==  null)
+            return NotFound("No products found .");
+        return Ok(products);
+    }
 }
