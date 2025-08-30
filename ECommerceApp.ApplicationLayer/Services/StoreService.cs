@@ -88,7 +88,7 @@ public class StoreService : IStoreService
             {
                 Category = p,
                 ImageUrl = imageUrls.GetValueOrDefault(p),
-                ToralProductsByCategory = totalProducts.GetValueOrDefault(p, 0)
+                TotalProductsByCategory = totalProducts.GetValueOrDefault(p, 0)
             });
         }
         return result;
