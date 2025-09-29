@@ -144,6 +144,23 @@ var allowedOrigins = builder.Configuration["AllowedOrigins"]?
 
 var app = builder.Build();
 
+//temporally
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    try
+    {
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Migration failed: {ex.Message}");
+        throw;
+    }
+
+}
+
+
 bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
 if (app.Environment.IsDevelopment() || enableSwaggerInProd)
 {
