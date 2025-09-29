@@ -20,9 +20,9 @@ public class Customer
     [JsonIgnore]
     public Address Address { get; private set; }
     [Range(1, 120)]
-    public int Age { get; private set; }
+    public DateOnly Age { get; private set; }
     
-    public Customer(string name, string email, int age)
+    public Customer(string name, string email, DateOnly age)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -30,12 +30,13 @@ public class Customer
         Age = age;
     }
     private Customer() { } 
-    public static Customer Create(Guid userId, string name, string email,int age)
+    public static Customer Create(Guid userId, string name, string email, DateOnly age)
     {
-        var customer = new Customer( name, email, age)
+        var customer = new Customer(name, email, age)
         {
             UserId = userId,
-            Id = userId
+            Id = userId,
+            Age = age
         };       
         return customer;
     }

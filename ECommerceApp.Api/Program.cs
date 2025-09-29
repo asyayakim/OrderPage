@@ -166,9 +166,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// app.Run();
-//
-// app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
-//
-// app.MapControllers();
+
+//temporally
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+}
+
 app.Run();
