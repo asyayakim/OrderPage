@@ -4,6 +4,7 @@ using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Order.Infrastructure.Repositories;
 
 namespace ECommerceApp.Api.Controllers;
@@ -53,5 +54,13 @@ public class UserController : ControllerBase
 
         return Ok(new { Token = token });
         
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var users = await _userManager.Users.ToListAsync();
+        return Ok(users);
     }
 }
