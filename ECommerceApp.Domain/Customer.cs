@@ -10,7 +10,7 @@ public class Customer
     public Guid Id { get; private set; }
     
     [ForeignKey("User")]
-    public Guid UserId { get; set; } = Guid.NewGuid();
+    public Guid UserId { get; set; } 
     
     [MaxLength(200)]
     public string Name { get; private set; }
@@ -21,7 +21,7 @@ public class Customer
     public Address Address { get; private set; } 
     public DateOnly Birthday { get; private set; }
     
-    public Customer(string name, string email, DateOnly birthday)
+    public Customer(string name, string email, DateOnly birthday, Guid dtoUserId)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -31,7 +31,7 @@ public class Customer
     private Customer() { } 
     public static Customer Create(Guid userId, string name, string email, DateOnly age)
     {
-        var customer = new Customer(name, email, age)
+        var customer = new Customer(name, email, age, userId)
         {
             UserId = userId,
             Id = userId,

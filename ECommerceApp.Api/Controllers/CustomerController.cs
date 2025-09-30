@@ -29,7 +29,7 @@ public class CustomerController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegisterCustomer([FromBody] CustomerDto dto)
     {
-        var customer = new Customer(dto.Name, dto.Email, dto.Birthday);
+        var customer = new Customer(dto.Name, dto.Email, dto.Birthday, dto.UserId);
         await _repository.AddAsync(customer);
         return Ok(customer.Id);
     }
