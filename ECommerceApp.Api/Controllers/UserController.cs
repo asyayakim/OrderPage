@@ -35,7 +35,7 @@ public class UserController : ControllerBase
             user.Id,
             $"{userDto.FirstName} {userDto.LastName}",
             userDto.Email,
-            userDto.Age
+            userDto.Birthday
         );
         _ = await _userRepository.SaveToDbAsync(customer);
 

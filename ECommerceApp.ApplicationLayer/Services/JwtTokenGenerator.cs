@@ -33,7 +33,10 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         {
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
-        claims.Add(new Claim("Age", user.Age.ToString()));
+        
+        //check birthday validation 
+        
+        claims.Add(new Claim("Age", user.Birthday.Year.ToString()));
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:JwtSecret"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

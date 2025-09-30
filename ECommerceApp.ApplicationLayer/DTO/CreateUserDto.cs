@@ -9,7 +9,7 @@ public class CreateUserDto
     public required string LastName { get; set; }
     public required string Email { get; set; }
     public required string Password { get; set; }
-    public DateOnly Age { get; set; }
+    public DateOnly Birthday { get; set; }
  
 
     public UserData ToUserData()
@@ -20,7 +20,7 @@ public class CreateUserDto
             LastName = LastName,
             Email = Email,
             UserName = Email,
-            Age = Age
+            Birthday = Birthday
         };
     }
 }

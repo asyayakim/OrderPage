@@ -18,16 +18,15 @@ public class Customer
     [MaxLength(256)]
     public string Email { get; private set; }
     [JsonIgnore]
-    public Address Address { get; private set; }
-    [Range(1, 120)]
-    public DateOnly Age { get; private set; }
+    public Address Address { get; private set; } 
+    public DateOnly Birthday { get; private set; }
     
-    public Customer(string name, string email, DateOnly age)
+    public Customer(string name, string email, DateOnly birthday)
     {
         Id = Guid.NewGuid();
         Name = name;
         Email = email;
-        Age = age;
+        Birthday = birthday;
     }
     private Customer() { } 
     public static Customer Create(Guid userId, string name, string email, DateOnly age)
@@ -36,7 +35,7 @@ public class Customer
         {
             UserId = userId,
             Id = userId,
-            Age = age
+            Birthday = age
         };       
         return customer;
     }
