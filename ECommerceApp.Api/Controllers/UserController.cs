@@ -30,7 +30,7 @@ public class UserController : ControllerBase
         var result = await _userManager.CreateAsync(user, userDto.Password);
         if (!result.Succeeded)
         {
-            return BadRequest(result.Errors);
+            return BadRequest(new { message = "Registration failed", errors = result.Errors });
         }
         var customer = Customer.Create(
             user.Id,
@@ -39,8 +39,7 @@ public class UserController : ControllerBase
             userDto.Birthday
         );
         _ = await _userRepository.SaveToDbAsync(customer);
-
-        return Ok("User registered successfully");
+        return Ok(new { message = "User registered successfully" });
     }
     [AllowAnonymous]
     [HttpPost("login")]
@@ -53,7 +52,6 @@ public class UserController : ControllerBase
         var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
         return Ok(new { Token = token });
-        
     }
 
     [AllowAnonymous]
