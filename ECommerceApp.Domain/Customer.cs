@@ -11,9 +11,6 @@ public class Customer
     
     [ForeignKey("User")]
     public Guid UserId { get; set; } 
-    
-    [MaxLength(200)]
-    public string Name { get; private set; }
 
     [JsonIgnore]
     public Address Address { get; private set; } 
@@ -22,7 +19,7 @@ public class Customer
     public Customer(Guid userId, string name, DateOnly birthday)
     {
         Id = Guid.NewGuid();
-        Name = name;
+        UserId = userId;
         Birthday = birthday;
     }
     private Customer() { } 
@@ -31,7 +28,6 @@ public class Customer
         var customer = new Customer(userId, name, age)
         {
             UserId = userId,
-            Name = name,
             Birthday = age
         };       
         return customer;

@@ -74,7 +74,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> Patch(CustomerDto userDto)
+    public async Task<IActionResult> Patch(UserDto userDto)
     {
         var user = await _userManager.FindByIdAsync(userDto.UserId.ToString());
         if (user == null)

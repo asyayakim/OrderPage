@@ -1,6 +1,6 @@
+using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
-
 using ECommerceApp.Domain;
 using Order.Infrastructure.Persistence;
 
@@ -21,9 +21,10 @@ public class CustomerRepository : ICustomerRepository
             .Include(c => c.Address)
             .FirstOrDefaultAsync(c => c.Id == id);
         if (user == null)
-        { 
+        {
             throw new ArgumentException("Customer not found");
         }
+
         return user;
     }
 
@@ -33,6 +34,7 @@ public class CustomerRepository : ICustomerRepository
         {
             throw new ArgumentNullException(nameof(customer));
         }
+
         await _dbContext.AddAsync(customer);
         await _dbContext.SaveChangesAsync();
     }
@@ -45,6 +47,19 @@ public class CustomerRepository : ICustomerRepository
         {
             throw new ArgumentException("No Customers were found");
         }
+
         return allClients;
+    }
+
+    public async Task<object> AddDataToUser(UserData customer, CustomerDto dto)
+    {
+        var address = await _dbContext.Addresses
+            .FirstOrDefaultAsync(a => a.CustomerId == customer.Id);
+
+        address = new Address(dto.Street, dto.ZipCode, customer.Id);
+        _dbContext.Addresses.Update(address);
+        
+        await _dbContext.SaveChangesAsync();
+        return address;
     }
 }

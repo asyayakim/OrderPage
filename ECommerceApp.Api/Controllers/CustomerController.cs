@@ -1,6 +1,7 @@
 using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Api.Controllers;
@@ -9,10 +10,12 @@ namespace ECommerceApp.Api.Controllers;
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerRepository _repository;
+    private readonly UserManager<UserData> _userManager;
 
-    public CustomerController(ICustomerRepository repository)
+    public CustomerController(ICustomerRepository repository, UserManager<UserData> userManager)
     {
         _repository = repository;
+        _userManager = userManager;
     }
     [HttpGet]
     public async Task<IActionResult> Get()
@@ -26,11 +29,14 @@ public class CustomerController : ControllerBase
         var result = await _repository.GetByIdAsync(id);
         return Ok(result);
     }
-    // [HttpPost]
-    // public async Task<IActionResult> RegisterCustomer([FromBody] CustomerDto dto)
-    // {
-    //     var customer = new Customer(dto.Name, dto.Email, dto.Birthday, dto.UserId);
-    //     await _repository.AddAsync(customer);
-    //     return Ok(customer.Id);
-    // }
+    [HttpPost("add-data")]
+    public async Task<IActionResult> AddDataCustomer([FromBody] CustomerDto dto)
+    {
+        var customer = await _userManager.FindByIdAsync(dto.UserId.ToString());
+        if (customer == null)
+            return NotFound(new { Message = "Customer not found" });
+        _ = await _repository.AddDataToUser(customer, dto);
+    
+        return Ok(new { Message = "Customer added successfully" });
+    }
 }
