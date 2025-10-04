@@ -13,5 +13,5 @@ public class UserData : IdentityUser<Guid>
     [MaxLength(100)] public string FirstName { get; set; }
 
     [MaxLength(100)] public string LastName { get; set; }
-    public DateOnly Birthday{ get; set; } = new DateOnly();
+    public DateOnly Birthday{ get; set; } 
 }

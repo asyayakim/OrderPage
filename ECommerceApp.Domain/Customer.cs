@@ -14,27 +14,24 @@ public class Customer
     
     [MaxLength(200)]
     public string Name { get; private set; }
-    [EmailAddress]
-    [MaxLength(256)]
-    public string Email { get; private set; }
+
     [JsonIgnore]
     public Address Address { get; private set; } 
     public DateOnly Birthday { get; private set; }
     
-    public Customer(string name, string email, DateOnly birthday, Guid dtoUserId)
+    public Customer(Guid userId, string name, DateOnly birthday)
     {
         Id = Guid.NewGuid();
         Name = name;
-        Email = email;
         Birthday = birthday;
     }
     private Customer() { } 
-    public static Customer Create(Guid userId, string name, string email, DateOnly age)
+    public static Customer Create(Guid userId, string name, DateOnly age)
     {
-        var customer = new Customer(name, email, age, userId)
+        var customer = new Customer(userId, name, age)
         {
             UserId = userId,
-            Id = userId,
+            Name = name,
             Birthday = age
         };       
         return customer;

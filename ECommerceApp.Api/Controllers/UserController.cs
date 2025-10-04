@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
+
 using Order.Infrastructure.Repositories;
 
 namespace ECommerceApp.Api.Controllers;
@@ -38,7 +38,6 @@ public class UserController : ControllerBase
         var customer = Customer.Create(
             user.Id,
             $"{userDto.FirstName} {userDto.LastName}",
-            userDto.Email,
             userDto.Birthday
         );
         _ = await _userRepository.SaveToDbAsync(customer);
@@ -86,5 +85,15 @@ public class UserController : ControllerBase
         await _userManager.UpdateAsync(user);
 
         return Ok(new {message = "User updated successfully"});
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        if (user == null)
+            return NotFound();
+        await _userManager.DeleteAsync(user);
+        return Ok(new {message = "User deleted successfully"});
     }
 }
