@@ -37,7 +37,6 @@ public class UserController : ControllerBase
         }
         var customer = Customer.Create(
             user.Id,
-            $"{userDto.FirstName} {userDto.LastName}",
             userDto.Birthday
         );
         _ = await _userRepository.SaveToDbAsync(customer);

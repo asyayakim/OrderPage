@@ -32,11 +32,11 @@ public class CustomerController : ControllerBase
     [HttpPost("add-data")]
     public async Task<IActionResult> AddDataCustomer([FromBody] CustomerDto dto)
     {
-        var customer = await _userManager.FindByIdAsync(dto.UserId.ToString());
-        if (customer == null)
-            return NotFound(new { Message = "Customer not found" });
-        _ = await _repository.AddDataToUser(customer, dto);
+        var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
+        if (user == null)
+            return NotFound(new { Message = "User not found" });
+        var result = await _repository.AddDataToUser(user, dto);
     
-        return Ok(new { Message = "Customer added successfully" });
+        return Ok(new { Message = "Customer added successfully", Data = result });
     }
 }

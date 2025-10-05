@@ -16,18 +16,19 @@ public class Customer
     public Address Address { get; private set; } 
     public DateOnly Birthday { get; private set; }
     
-    public Customer(Guid userId, string name, DateOnly birthday)
+    public Customer(Guid userId, DateOnly birthday)
     {
         Id = Guid.NewGuid();
         UserId = userId;
         Birthday = birthday;
     }
     private Customer() { } 
-    public static Customer Create(Guid userId, string name, DateOnly age)
+    public static Customer Create(Guid userId, DateOnly age)
     {
-        var customer = new Customer(userId, name, age)
+        var customer = new Customer(userId, age)
         {
             UserId = userId,
+            
             Birthday = age
         };       
         return customer;

@@ -51,14 +51,24 @@ public class CustomerRepository : ICustomerRepository
         return allClients;
     }
 
-    public async Task<object> AddDataToUser(UserData customer, CustomerDto dto)
+    public async Task<object> AddDataToUser(UserData user, CustomerDto dto)
     {
+        var customer = await _dbContext.Customers.FirstOrDefaultAsync(c => c.UserId == user.Id);
+        if (customer == null)
+        {
+            throw new ArgumentException("Customer not found");
+        }
         var address = await _dbContext.Addresses
             .FirstOrDefaultAsync(a => a.CustomerId == customer.Id);
-
-        address = new Address(dto.Street, dto.ZipCode, customer.Id);
-        _dbContext.Addresses.Update(address);
-        
+        if (address == null)
+        {
+            address = new Address(dto.Street, dto.ZipCode, customer.Id, user.Id);
+            _dbContext.Addresses.Add(address);
+        }
+        else
+        { 
+            address.Update(dto.Street, dto.ZipCode);
+        }
         await _dbContext.SaveChangesAsync();
         return address;
     }

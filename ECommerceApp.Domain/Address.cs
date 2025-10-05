@@ -8,7 +8,7 @@ public class Address
 {
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
-    public Guid UserId { get; private set; } = Guid.NewGuid();
+    public Guid UserId { get; private set; }
     [MaxLength(200)]
 
     public string Street { get; private set; }
@@ -24,12 +24,18 @@ public class Address
     [JsonIgnore]
     public Customer Customer { get; private set; }
     private Address() { }
-    public Address(string street, string zipCode, Guid customerId)
+    public Address(string street, string zipCode, Guid customerId, Guid userId )
     {
         Street = street;
         City = "Oslo";
         ZipCode = zipCode;
         CustomerId = customerId;
         Country = "Norway";
+        UserId = userId;
+    }
+    public void Update(string street, string zipCode)
+    {
+        Street = street;
+        ZipCode = zipCode;
     }
 }
