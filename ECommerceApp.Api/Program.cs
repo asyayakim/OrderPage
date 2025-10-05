@@ -143,7 +143,11 @@ var allowedOrigins = builder.Configuration["AllowedOrigins"]?
 });
 
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await RoleManagerSeeder.CreateRoles(services);
+}
 //temporally
 using (var scope = app.Services.CreateScope())
 {
