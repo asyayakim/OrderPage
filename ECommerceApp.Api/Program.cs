@@ -132,18 +132,38 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<PlaceOrderHandler>();
 builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<UserRepository>();
-var allowedOrigins = builder.Configuration["AllowedOrigins"]?
-                         .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                     ?? Array.Empty<string>();builder.Services.AddCors(options =>
 builder.Services.AddScoped<IUserDataFavBasket, UserDataFavBasket>();
 builder.Services.AddScoped<IFavoriteManager, FavoriteManager>();
+
+
+
+// var allowedOrigins = builder.Configuration["AllowedOrigins"]?
+//                          .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+//                      ?? Array.Empty<string>();builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowFrontend", policy =>
+//         policy.WithOrigins(allowedOrigins!)
+//             .AllowAnyHeader()
+//             .AllowAnyMethod()
+//     );
+// });
+
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins(allowedOrigins!)
+    {
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "https://product-service-frontend.vercel.app",
+                "https://product-service-frontend-git-main-asyayakims-projects.vercel.app", 
+                "https://product-service-frontend-pzjd9wrjw-asyayakims-projects.vercel.app", 
+                "https://product-service-frontend.onrender.com"
+            )
             .AllowAnyHeader()
-            .AllowAnyMethod()
-    );
+            .AllowAnyMethod();
+    });
 });
+
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
@@ -152,6 +172,8 @@ using (var scope = app.Services.CreateScope())
     await RoleManagerSeeder.CreateRoles(services);
 }
 //temporally
+
+
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -177,6 +199,7 @@ if (app.Environment.IsDevelopment() || enableSwaggerInProd)
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1");
     });
 }
+
 //local test
 // app.UseSwagger();
 // app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
@@ -189,13 +212,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-
-//temporally
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
-}
 
 app.Run();
