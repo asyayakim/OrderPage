@@ -29,6 +29,7 @@ builder.Services.AddScoped<ProductServer>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<ProductCategorizer>();
+builder.Services.AddScoped<RoleManagerSeeder>();
 
 
 builder.Services.AddControllers()
@@ -134,6 +135,8 @@ builder.Services.AddScoped<UserRepository>();
 var allowedOrigins = builder.Configuration["AllowedOrigins"]?
                          .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                      ?? Array.Empty<string>();builder.Services.AddCors(options =>
+builder.Services.AddScoped<IUserDataFavBasket, UserDataFavBasket>();
+builder.Services.AddScoped<IFavoriteManager, FavoriteManager>();
 {
     options.AddPolicy("AllowFrontend", policy =>
         policy.WithOrigins(allowedOrigins!)

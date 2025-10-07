@@ -13,7 +13,7 @@ services:
       - orderpage_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Host=ecommerce_pg;Port=5432;Database=ecommerce;Username=postgres;Password=postgres
+      - ConnectionStrings__DefaultConnection=Host=ecommerce_pg;Port=5432;Database=ecommerce_pg;Username=postgres;Password=postgres
       - Jwt__JwtSecret=your-secret
       - Jwt__ValidIssuer=yourissuer
       - Jwt__ValidAudience=youraudience
