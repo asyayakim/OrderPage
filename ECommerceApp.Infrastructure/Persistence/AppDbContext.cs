@@ -21,8 +21,8 @@ public class AppDbContext : IdentityDbContext<UserData, AppRole, Guid>
     public DbSet<Address> Addresses { get; set; }
     public DbSet<UserData> UsersData { get; set; }
     public DbSet<EmbeddingEntry> Embeddings { get; set; }
-    public DbSet<Basket> Baskets { get; set; }
-    public DbSet<Favorite> Favorites { get; set; }
+    // public DbSet<Basket> Baskets { get; set; }
+    // public DbSet<Favorite> Favorites { get; set; }
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

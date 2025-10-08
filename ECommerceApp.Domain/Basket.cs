@@ -1,6 +1,6 @@
-namespace ECommerceApp.Domain;
-
-public class Basket
-{
-    
-}
+// namespace ECommerceApp.Domain;
+//
+// public class Basket
+// {
+//     
+// }

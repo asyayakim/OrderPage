@@ -1,6 +1,6 @@
-namespace ECommerceApp.Domain;
-
-public class Favorite
-{
-    
-}
+// namespace ECommerceApp.Domain;
+//
+// public class Favorite
+// {
+//     
+// }

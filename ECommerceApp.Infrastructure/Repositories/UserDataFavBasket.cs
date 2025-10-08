@@ -14,9 +14,10 @@ public class UserDataFavBasket : IUserDataFavBasket
         _context = context;
     }
 
-    public async Task<List<Favorite>> GetAllFavoritesFromDb()
+    public async Task<List<object>> GetAllFavoritesFromDb()
     {
-        var favorites = await _context.Favorites.ToListAsync();
-        return favorites;
+        // var favorites = await _context.Favorites.ToListAsync();
+        // return favorites;
+        return null;
     }
 }
