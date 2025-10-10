@@ -6,7 +6,10 @@ namespace ECommerceApp.Domain;
 public class Basket : ProductBase
 {
     [Required]
-    public string UserId { get; set; }
-    [ForeignKey(nameof(UserId))]
-    public UserData User { get; set; }
+    public Guid CustomerId  { get; set; }
+    
+    [ForeignKey(nameof(CustomerId))]
+    public Customer Customer { get; set; }
+
+    public int Quantity { get; set; }
 }

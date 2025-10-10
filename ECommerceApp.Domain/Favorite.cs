@@ -5,8 +5,10 @@ namespace ECommerceApp.Domain;
 
 public class Favorite : ProductBase
 {
-    [Required]
-    public Guid UserId { get; set; }
-    [ForeignKey("UserId")]
-    public UserData User { get; set; }
+    [Required] 
+    public Guid CustomerId { get; set; }
+    [ForeignKey(nameof(CustomerId))] 
+    public Customer Customer { get; set; }
+
+    public DateTime AddedAt { get; set; } = DateTime.UtcNow;
 }

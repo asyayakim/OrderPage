@@ -12,11 +12,12 @@ public class Customer
     [ForeignKey("User")]
     public Guid UserId { get; set; } 
 
+    public UserData User { get; set; } 
     [JsonIgnore]
     public Address Address { get; private set; } 
     public DateOnly Birthday { get; private set; }
-    // public Basket Basket { get; private set; }
-    // public Favorite Favorite { get; private set; }
+    public Basket Basket { get; private set; }
+    public Favorite Favorite { get; private set; }
     
     public Customer(Guid userId, DateOnly birthday)
     {
