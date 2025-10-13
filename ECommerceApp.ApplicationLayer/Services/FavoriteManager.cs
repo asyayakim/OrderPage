@@ -18,5 +18,9 @@ public class FavoriteManager : IFavoriteManager
        var favorites = await _userDataFavBasket.GetAllFavoritesFromDb();
        return [favorites];
     }
-    
+
+    public async Task<object?> AddFavorite(string userId, Guid productId)
+    {
+        return await _userDataFavBasket.AddFavorite(userId, productId);
+    }
 }

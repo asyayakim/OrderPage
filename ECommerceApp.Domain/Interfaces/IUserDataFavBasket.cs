@@ -2,5 +2,6 @@ namespace ECommerceApp.Domain.Interfaces;
 
 public interface IUserDataFavBasket
 {
-    Task<List<object>> GetAllFavoritesFromDb();
+    Task<List<Favorite>> GetAllFavoritesFromDb();
+    Task<object?> AddFavorite(string userId, Guid productId);
 }
