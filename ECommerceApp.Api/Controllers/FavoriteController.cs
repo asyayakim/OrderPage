@@ -42,7 +42,24 @@ public class FavoriteController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(new { message = e.Message });;
+            return BadRequest(new { message = e.Message });
+        }
+    }
+
+    [HttpDelete("{productId}")]
+    public async Task<IActionResult> RemoveFavorite(Guid productId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        if (await _userManager.FindByIdAsync(userId) == null)
+            return NotFound(new {Message = "user not found"});
+        try
+        {
+            var favorite = await _favoriteManager.DeleteFavorite(userId, productId);
+            return Ok(favorite);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new { message = e.Message });
         }
     }
 }

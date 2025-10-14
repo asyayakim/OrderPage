@@ -36,6 +36,21 @@ public class UserDataFavBasket : IUserDataFavBasket
                 StoreId = product!.Store.StoreId,
             });
         await _context.SaveChangesAsync();
-        return addToFav;
+        return addToFav.Entity;
+    }
+
+    public async Task<object?> DeleteFavorite(string userId, Guid productId)
+    {
+        var customer = await _context.Customers.
+            FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+        if (customer == null)
+            return null;
+        var product = await _context.Favorites.
+            FirstOrDefaultAsync(p =>p.ProductId == productId 
+                                    && p.CustomerId == customer.Id);
+        
+        _context.Favorites.Remove(product!);
+        await _context.SaveChangesAsync();
+        return product;
     }
 }

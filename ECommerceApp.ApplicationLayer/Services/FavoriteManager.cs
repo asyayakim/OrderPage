@@ -23,4 +23,9 @@ public class FavoriteManager : IFavoriteManager
     {
         return await _userDataFavBasket.AddFavorite(userId, productId);
     }
+
+    public async Task<object?> DeleteFavorite(string userId, Guid productId)
+    {
+        return await _userDataFavBasket.DeleteFavorite(userId, productId);
+    }
 }
