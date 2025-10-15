@@ -44,4 +44,10 @@ public class FavoriteManager : IFavoriteManager
     {
         return await _userDataFavBasket.DeleteFavorite(userId, productId);
     }
+
+    public async Task<List<object?>> GetProductsFromBasketAsync()
+    {
+        var products= await _userDataFavBasket.GetAllProductsFromBasketsAllCustomersFromDb();
+        return [products];
+    }
 }

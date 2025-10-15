@@ -19,11 +19,6 @@ public class UserDataFavBasket : IUserDataFavBasket
         return await _context.Favorites.ToListAsync();
     }
 
-    public Task<object?> AddFavorite(string userId, Guid productId)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<Favorite?> AddFavorite(Guid customerId, Guid productId, Guid storeId)
     {
         var exists = await _context.Favorites
@@ -34,9 +29,7 @@ public class UserDataFavBasket : IUserDataFavBasket
         var productExists = await _context.Products.AnyAsync(p => p.ProductId == productId);
         if (!productExists)
             throw new InvalidOperationException("Cannot add favorite: Product not found in database.");
-        
 
-        Console.WriteLine($"Product {productId} exists in DB? {productExists}");
 
         await _context.Favorites.AddAsync(favorite);
         await _context.SaveChangesAsync();
@@ -57,10 +50,17 @@ public class UserDataFavBasket : IUserDataFavBasket
         await _context.SaveChangesAsync();
         return product;
     }
-    public async Task<IEnumerable<Favorite>> GetByCustomerIdAsync(Guid customerId)
+
+       public async Task<IEnumerable<Favorite>> GetByCustomerIdAsync(Guid customerId)
     {
         return await _context.Favorites
             .Where(f => f.CustomerId == customerId)
             .ToListAsync();
     }
+    public async Task<List<Basket>> GetAllProductsFromBasketsAllCustomersFromDb()
+    {
+        return await _context.Baskets.ToListAsync();
+    }
+
+
 }
