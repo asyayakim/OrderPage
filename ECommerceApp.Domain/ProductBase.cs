@@ -5,9 +5,6 @@ namespace ECommerceApp.Domain;
 
 public abstract class ProductBase
 {
-    [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
-
     [Required]
     public Guid ProductId { get; set; }
     [ForeignKey(nameof(ProductId))]

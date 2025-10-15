@@ -5,6 +5,8 @@ namespace ECommerceApp.Domain;
 
 public class Basket : ProductBase
 {
+    [Key]
+    public Guid Id { get; set; } = Guid.NewGuid();
     [Required]
     public Guid CustomerId  { get; set; }
     

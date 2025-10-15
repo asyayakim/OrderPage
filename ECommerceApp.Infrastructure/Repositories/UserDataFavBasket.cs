@@ -8,12 +8,10 @@ namespace Order.Infrastructure.Repositories;
 public class UserDataFavBasket : IUserDataFavBasket
 {
     private readonly AppDbContext _context;
-    private readonly ProductServer _productServer;
 
-    public UserDataFavBasket(AppDbContext context, ProductServer productServer)
+    public UserDataFavBasket(AppDbContext context)
     {
         _context = context;
-        _productServer = productServer;
     }
 
     public async Task<List<Favorite>> GetAllFavoritesFromDb()
@@ -21,22 +19,28 @@ public class UserDataFavBasket : IUserDataFavBasket
         return await _context.Favorites.ToListAsync();
     }
 
-    public async Task<object?> AddFavorite(string userId, Guid productId)
+    public Task<object?> AddFavorite(string userId, Guid productId)
     {
-        var customer = await _context.Customers.
-            FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
-        if (customer == null)
+        throw new NotImplementedException();
+    }
+
+    public async Task<Favorite?> AddFavorite(Guid customerId, Guid productId, Guid storeId)
+    {
+        var exists = await _context.Favorites
+            .FirstOrDefaultAsync(f => f.ProductId == productId && f.CustomerId == customerId);
+        if (exists != null)
             return null;
-        var product = await _productServer.GetProductById(productId);
-        var addToFav = await _context.Favorites.AddAsync( 
-            new Favorite
-            {
-                ProductId = productId,
-                CustomerId = customer.Id,
-                StoreId = product!.Store.StoreId,
-            });
+        var favorite = Favorite.Create(customerId, productId, storeId);
+        var productExists = await _context.Products.AnyAsync(p => p.ProductId == productId);
+        if (!productExists)
+            throw new InvalidOperationException("Cannot add favorite: Product not found in database.");
+        
+
+        Console.WriteLine($"Product {productId} exists in DB? {productExists}");
+
+        await _context.Favorites.AddAsync(favorite);
         await _context.SaveChangesAsync();
-        return addToFav.Entity;
+        return favorite;
     }
 
     public async Task<object?> DeleteFavorite(string userId, Guid productId)
@@ -52,5 +56,11 @@ public class UserDataFavBasket : IUserDataFavBasket
         _context.Favorites.Remove(product!);
         await _context.SaveChangesAsync();
         return product;
+    }
+    public async Task<IEnumerable<Favorite>> GetByCustomerIdAsync(Guid customerId)
+    {
+        return await _context.Favorites
+            .Where(f => f.CustomerId == customerId)
+            .ToListAsync();
     }
 }

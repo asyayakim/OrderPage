@@ -10,13 +10,13 @@ namespace ECommerceApp.Api.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly ProductImporter _productImporter;
-    private readonly ProductServer _productServer;
+    private readonly IProductService _productService;
     private readonly IStoreService _storeService;
 
-    public ProductsController(ProductImporter productImporter, ProductServer productServer, IStoreService storeService)
+    public ProductsController(ProductImporter productImporter, IProductService productService, IStoreService storeService)
     {
         _productImporter = productImporter;
-        _productServer = productServer;
+        _productService = productService;
         _storeService = storeService;
     }
 
@@ -34,7 +34,7 @@ public class ProductsController : ControllerBase
     [HttpGet("products-frontend")]
     public async Task<IActionResult> GetAllProductsForFrontend([FromQuery]int pageNumber = 1, int pageSize = 10)
     {
-        var products = await _productServer.GetProductsFromDb(pageNumber, pageSize);
+        var products = await _productService.GetProductsFromDb(pageNumber, pageSize);
         if (products.Count == 0)
             return NotFound("No products found.");
         return Ok(products);
@@ -43,7 +43,7 @@ public class ProductsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProduct(Guid id)
     {
-        var product = await _productServer.GetProductById(id);
+        var product = await _productService.GetProductById(id);
         if (product == null)
             return NotFound("No products found.");
         return Ok(product);
@@ -62,7 +62,7 @@ public class ProductsController : ControllerBase
     [HttpGet("product-of-the-week")]
     public async Task<IActionResult> GetProductOfTheWeek()
     {
-        var product = await _productServer.GetOneAsync();
+        var product = await _productService.GetOneAsync();
         return Ok(product);
     }
     
