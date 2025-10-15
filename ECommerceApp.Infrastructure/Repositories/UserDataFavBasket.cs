@@ -51,16 +51,25 @@ public class UserDataFavBasket : IUserDataFavBasket
         return product;
     }
 
-       public async Task<IEnumerable<Favorite>> GetByCustomerIdAsync(Guid customerId)
-    {
-        return await _context.Favorites
-            .Where(f => f.CustomerId == customerId)
-            .ToListAsync();
-    }
     public async Task<List<Basket>> GetAllProductsFromBasketsAllCustomersFromDb()
     {
         return await _context.Baskets.ToListAsync();
     }
 
 
+    public async Task<IEnumerable<Favorite>> GetAllFavoritesByUserFromDb(Guid customerId)
+    {
+        return await _context.Favorites
+            .Where(f => f.CustomerId == customerId)
+            .ToListAsync();
+    }
+    
+    public async Task<Basket?> AddProductToTheBasketToDb(Guid customerId, Guid productId)
+    {
+        // var exist =  await _context.Baskets.FirstOrDefaultAsync
+        //     (p => p.ProductId == productId 
+        //           && p.CustomerId == customerId);
+        // var basket = Basket.AddToTheBasket(customerId, productId, quantity, storeId);
+        throw new NotImplementedException();
+    }
 }

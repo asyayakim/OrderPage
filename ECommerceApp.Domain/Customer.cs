@@ -17,7 +17,8 @@ public class Customer
     [JsonIgnore]
     public Address Address { get; private set; } 
     public DateOnly Birthday { get; private set; }
-    public ICollection<Basket> Baskets { get; private set; } = new List<Basket>();
+    public Basket? Basket { get; private set; }
+
     public ICollection<Favorite> Favorites { get; private set; } = new List<Favorite>();
 
     public Customer(Guid userId, DateOnly birthday)

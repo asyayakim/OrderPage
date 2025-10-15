@@ -20,10 +20,13 @@ public class FavoriteController : ControllerBase
         _favoriteManager = favoriteManager;
     }
 
-    [HttpGet("all")]
-    public async Task<IActionResult> Get()
+    [HttpGet("all-favorites-by-user")]
+    public async Task<IActionResult> GetAllFavorites()
     {
-        var favorites = await _favoriteManager.GetAllFavorites();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        if (await _userManager.FindByIdAsync(userId) == null)
+            return NotFound(new {Message = "user not found"});
+        var favorites = await _favoriteManager.GetAllFavoritesAsync(userId);
         if (favorites == null)
            return NotFound(new {Message = "favorites not found"});
         return Ok(favorites);
@@ -61,5 +64,13 @@ public class FavoriteController : ControllerBase
         {
             return BadRequest(new { message = e.Message });
         }
+    }
+    [HttpGet("all")]
+    public async Task<IActionResult> Get()
+    {
+        var favorites = await _favoriteManager.GetAllFavorites();
+        if (favorites == null)
+            return NotFound(new {Message = "favorites not found"});
+        return Ok(favorites);
     }
 }

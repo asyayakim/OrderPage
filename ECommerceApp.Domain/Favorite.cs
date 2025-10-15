@@ -13,6 +13,7 @@ public class Favorite : ProductBase
     public Customer Customer { get; set; }
 
     public DateTime AddedAt { get; set; } = DateTime.UtcNow;
+    
     private Favorite() { }
     public static Favorite Create(Guid customerId, Guid productId, Guid storeId)
     {

@@ -50,4 +50,21 @@ public class FavoriteManager : IFavoriteManager
         var products= await _userDataFavBasket.GetAllProductsFromBasketsAllCustomersFromDb();
         return [products];
     }
+
+    public async Task<List<object?>> GetAllFavoritesAsync(string userId)
+    {
+        var customer = await _customerRepository.GetByIdAsync(Guid.Parse(userId));
+       
+        var favorites = await _userDataFavBasket.GetAllFavoritesByUserFromDb(customer.Id);
+        return [favorites];
+    }
+
+    public async Task<object?> AddProductToBasketAsync(string userId, Guid productId)
+    {
+        var customer = await _customerRepository.GetByIdAsync(Guid.Parse(userId));
+        if (customer == null)
+            return new { Message = "Customer not found" };
+        var product = await _userDataFavBasket.AddProductToTheBasketToDb(customer.Id,productId);
+        return product;
+    }
 }

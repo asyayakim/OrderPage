@@ -3,15 +3,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerceApp.Domain;
 
-public class Basket : ProductBase
+public class Basket 
 {
     [Key]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid BasketId { get; set; } = Guid.NewGuid();
     [Required]
     public Guid CustomerId  { get; set; }
     
     [ForeignKey(nameof(CustomerId))]
     public Customer Customer { get; set; }
 
-    public int Quantity { get; set; }
+    public ICollection<BasketItem> Items { get; set; } = new List<BasketItem>();
+    private Basket() { }
+
+    public static Basket Create(Guid customerId)
+    {
+        //logic for quantity
+        return new Basket
+        {
+            CustomerId = customerId,
+        };
+    }
 }
