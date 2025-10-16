@@ -1,4 +1,5 @@
 using ECommerceApp.ApplicationLayer.DTO;
+using ECommerceApp.Domain;
 
 namespace ECommerceApp.ApplicationLayer.Interfaces;
 
@@ -9,5 +10,5 @@ public interface IFavoriteManager
     Task<object> DeleteFavorite(string userId, Guid productId);
     Task<List<object?>> GetProductsFromBasketAsync();
     Task<List<object?>> GetAllFavoritesAsync(string userId);
-    Task<object?> AddProductToBasketAsync(string userId, Guid productId);
+    Task<object?> AddProductToBasketAsync(string userId, BasketDto productId);
 }

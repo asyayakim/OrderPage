@@ -7,5 +7,5 @@ public interface IUserDataFavBasket
     Task<object?> DeleteFavorite(string userId, Guid productId);
     Task<List<Basket>> GetAllProductsFromBasketsAllCustomersFromDb();
     Task<IEnumerable<Favorite>> GetAllFavoritesByUserFromDb(Guid customerId);
-    Task<Basket?> AddProductToTheBasketToDb(Guid customerId, Guid productId);
+    Task<Basket?> AddProductToTheBasketToDb(Guid customerId, Basket basketEntity);
 }

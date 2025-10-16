@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Identity;
@@ -26,13 +27,13 @@ public class BasketController : ControllerBase
         return Ok(basket);
     }
 
-    [HttpPost("{productId}")]
-    public async Task<IActionResult> Post(Guid productId)
+    [HttpPost("many")]
+    public async Task<IActionResult> Post([FromBody] BasketDto basket)
     {
         var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (await _userManager.FindByIdAsync(user) == null)
             return NotFound(new { Message = "user not found" });
-        var product = await _favoriteManager.AddProductToBasketAsync(user, productId);
+        var product = await _favoriteManager.AddProductToBasketAsync(user, basket);
         if (product == null)
             return NotFound(new { Message = "product not found" });
         return Ok(product);

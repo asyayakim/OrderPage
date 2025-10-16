@@ -18,10 +18,22 @@ public class Basket
 
     public static Basket Create(Guid customerId)
     {
-        //logic for quantity
         return new Basket
         {
             CustomerId = customerId,
         };
+    }
+
+    public void AddItem(BasketItem item)
+    {
+        var itemToAdd = Items.SingleOrDefault(i => i.ProductId == item.ProductId);
+        if (itemToAdd != null)
+        {
+            itemToAdd.Quantity += item.Quantity;
+        }
+        else
+        {
+            Items.Add(item);
+        }
     }
 }

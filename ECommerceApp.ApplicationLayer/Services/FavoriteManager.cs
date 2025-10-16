@@ -1,6 +1,6 @@
+using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
-
-
+using ECommerceApp.Domain;
 using ECommerceApp.Domain.Interfaces;
 
 namespace ECommerceApp.ApplicationLayer.Services;
@@ -59,12 +59,25 @@ public class FavoriteManager : IFavoriteManager
         return [favorites];
     }
 
-    public async Task<object?> AddProductToBasketAsync(string userId, Guid productId)
+    public async Task<object?> AddProductToBasketAsync(string userId, BasketDto basket)
     {
         var customer = await _customerRepository.GetByIdAsync(Guid.Parse(userId));
         if (customer == null)
             return new { Message = "Customer not found" };
-        var product = await _userDataFavBasket.AddProductToTheBasketToDb(customer.Id,productId);
-        return product;
+
+        var basketEntity = Basket.Create(customer.Id);
+        foreach (var item in basket.Items)
+        {
+            var newBasketItem = BasketItem.Create(
+                basketEntity.BasketId,
+                item.ProductId,
+                item.Quantity,
+                item.StoreId
+            );
+            basketEntity.AddItem(newBasketItem);
+        } 
+       
+        var products = await _userDataFavBasket.AddProductToTheBasketToDb(customer.Id, basketEntity);
+        return products;
     }
 }

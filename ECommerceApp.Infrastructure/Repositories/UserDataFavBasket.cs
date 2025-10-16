@@ -1,3 +1,4 @@
+using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.Domain;
 using ECommerceApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +30,7 @@ public class UserDataFavBasket : IUserDataFavBasket
         var productExists = await _context.Products.AnyAsync(p => p.ProductId == productId);
         if (!productExists)
             throw new InvalidOperationException("Cannot add favorite: Product not found in database.");
-
-
+        
         await _context.Favorites.AddAsync(favorite);
         await _context.SaveChangesAsync();
         return favorite;
@@ -38,14 +38,12 @@ public class UserDataFavBasket : IUserDataFavBasket
 
     public async Task<object?> DeleteFavorite(string userId, Guid productId)
     {
-        var customer = await _context.Customers.
-            FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+        var customer = await _context.Customers.FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
         if (customer == null)
             return null;
-        var product = await _context.Favorites.
-            FirstOrDefaultAsync(p =>p.ProductId == productId 
-                                    && p.CustomerId == customer.Id);
-        
+        var product = await _context.Favorites.FirstOrDefaultAsync(p => p.ProductId == productId
+                                                                        && p.CustomerId == customer.Id);
+
         _context.Favorites.Remove(product!);
         await _context.SaveChangesAsync();
         return product;
@@ -53,7 +51,7 @@ public class UserDataFavBasket : IUserDataFavBasket
 
     public async Task<List<Basket>> GetAllProductsFromBasketsAllCustomersFromDb()
     {
-        return await _context.Baskets.ToListAsync();
+        return await _context.Baskets.Include(b => b.Items).ToListAsync();
     }
 
 
@@ -63,13 +61,30 @@ public class UserDataFavBasket : IUserDataFavBasket
             .Where(f => f.CustomerId == customerId)
             .ToListAsync();
     }
-    
-    public async Task<Basket?> AddProductToTheBasketToDb(Guid customerId, Guid productId)
+
+    public async Task<Basket?> AddProductToTheBasketToDb(Guid customerId, Basket basket)
     {
-        // var exist =  await _context.Baskets.FirstOrDefaultAsync
-        //     (p => p.ProductId == productId 
-        //           && p.CustomerId == customerId);
-        // var basket = Basket.AddToTheBasket(customerId, productId, quantity, storeId);
-        throw new NotImplementedException();
+        var userBasket = await _context.
+            Baskets.Include(b => b.Items)
+            .FirstOrDefaultAsync(b => b.CustomerId == customerId);
+        if (userBasket == null)
+        {
+           userBasket = Basket.Create(customerId);
+           _context.Baskets.Add(userBasket);
+        }
+
+        foreach (var item in basket.Items)
+        {
+            var newBasketItem = BasketItem.Create(
+                userBasket.BasketId,
+                item.ProductId,
+                item.Quantity,
+                item.StoreId
+                );
+            userBasket.AddItem(newBasketItem);
+        }
+        
+        await _context.SaveChangesAsync();
+        return userBasket;
     }
 }
