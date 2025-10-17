@@ -1,10 +1,8 @@
 using System.Security.Claims;
-using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
 namespace ECommerceApp.Api.Controllers;
 [Route("api/[controller]")]

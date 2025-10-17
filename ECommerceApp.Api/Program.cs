@@ -202,10 +202,9 @@ if (app.Environment.IsDevelopment() || enableSwaggerInProd)
 
 //local test
 // app.UseSwagger();
-// app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
-//
+// app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseCors("AllowFrontend"); 
