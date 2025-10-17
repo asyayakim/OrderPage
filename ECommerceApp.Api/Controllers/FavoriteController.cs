@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.ApplicationLayer.Interfaces;
 using ECommerceApp.Domain;
 using Microsoft.AspNetCore.Identity;
@@ -18,12 +20,57 @@ public class FavoriteController : ControllerBase
         _favoriteManager = favoriteManager;
     }
 
+    [HttpGet("all-favorites-by-user")]
+    public async Task<IActionResult> GetAllFavorites()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        if (await _userManager.FindByIdAsync(userId) == null)
+            return NotFound(new {Message = "user not found"});
+        var favorites = await _favoriteManager.GetAllFavoritesAsync(userId);
+        if (favorites == null)
+           return NotFound(new {Message = "favorites not found"});
+        return Ok(favorites);
+    }
+
+    [HttpPost("{productId}")]
+    public async Task<IActionResult> AddFavorite(Guid productId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        if (await _userManager.FindByIdAsync(userId) == null)
+            return NotFound(new {Message = "user not found"});
+        try
+        {
+            var favorite = await _favoriteManager.AddFavorite(userId, productId);
+            return Ok(favorite);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new { message = e.Message });
+        }
+    }
+
+    [HttpDelete("{productId}")]
+    public async Task<IActionResult> RemoveFavorite(Guid productId)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        if (await _userManager.FindByIdAsync(userId) == null)
+            return NotFound(new {Message = "user not found"});
+        try
+        {
+            var favorite = await _favoriteManager.DeleteFavorite(userId, productId);
+            return Ok(favorite);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new { message = e.Message });
+        }
+    }
     [HttpGet("all")]
     public async Task<IActionResult> Get()
     {
         var favorites = await _favoriteManager.GetAllFavorites();
         if (favorites == null)
-           return NotFound(new {Message = "favorites not found"});
+            return NotFound(new {Message = "favorites not found"});
         return Ok(favorites);
     }
 }

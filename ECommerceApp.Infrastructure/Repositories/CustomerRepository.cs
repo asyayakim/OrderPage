@@ -17,9 +17,10 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task<Customer> GetByIdAsync(Guid id)
     {
-        var user = await _dbContext.Customers
+        var user = await _dbContext.Customers.Include(p => p.Basket)
+            .Include(c => c.Favorites)
             .Include(c => c.Address)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .FirstOrDefaultAsync(c => c.UserId == id);
         if (user == null)
         {
             throw new ArgumentException("Customer not found");

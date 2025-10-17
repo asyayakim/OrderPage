@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -16,9 +17,12 @@ public class Customer
     [JsonIgnore]
     public Address Address { get; private set; } 
     public DateOnly Birthday { get; private set; }
-    public Basket Basket { get; private set; }
-    public Favorite Favorite { get; private set; }
     
+    
+    public Basket Basket { get; private set; }
+
+    public ICollection<Favorite> Favorites { get; private set; } = new List<Favorite>();
+
     public Customer(Guid userId, DateOnly birthday)
     {
         Id = Guid.NewGuid();
