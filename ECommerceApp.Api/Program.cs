@@ -25,7 +25,6 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ProductImporter>();
-builder.Services.AddScoped<ProductServer>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<ProductCategorizer>();
@@ -64,7 +63,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddIdentity<UserData, AppRole>()
+builder.Services.AddIdentity<UserData, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
@@ -134,7 +133,8 @@ builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<IUserDataFavBasket, UserDataFavBasket>();
 builder.Services.AddScoped<IFavoriteManager, FavoriteManager>();
-
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 
 // var allowedOrigins = builder.Configuration["AllowedOrigins"]?
@@ -202,10 +202,9 @@ if (app.Environment.IsDevelopment() || enableSwaggerInProd)
 
 //local test
 // app.UseSwagger();
-// app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API V1"); });
-//
+// app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseRouting();
 app.UseCors("AllowFrontend"); 

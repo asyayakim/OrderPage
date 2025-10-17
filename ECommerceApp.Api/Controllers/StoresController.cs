@@ -1,5 +1,4 @@
 using ECommerceApp.ApplicationLayer.Interfaces;
-using ECommerceApp.ApplicationLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Api.Controllers;
