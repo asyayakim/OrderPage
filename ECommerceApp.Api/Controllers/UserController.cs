@@ -30,11 +30,11 @@ public class UserController : ControllerBase
     {
         var user = userDto.ToUserData();
         var result = await _userManager.CreateAsync(user, userDto.Password);
-        _= await _userManager.AddToRoleAsync(user, "Customer");
         if (!result.Succeeded)
         {
             return BadRequest(new { message = "Registration failed", errors = result.Errors });
         }
+        _= await _userManager.AddToRoleAsync(user, "Customer");
         var customer = Customer.Create(
             user.Id,
             userDto.Birthday

@@ -4,7 +4,6 @@ namespace ECommerceApp.ApplicationLayer.DTO;
 
 public class BasketDto
 {
-    public Guid CustomerId  { get; set; } 
     public ICollection<BasketItemDto> Items { get; set; } 
 }
 

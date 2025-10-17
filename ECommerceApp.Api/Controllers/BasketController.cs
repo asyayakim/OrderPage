@@ -39,7 +39,7 @@ public class BasketController : ControllerBase
         return Ok(product);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery]  Guid productId)
     {
         var user = User.FindFirstValue(ClaimTypes.NameIdentifier);

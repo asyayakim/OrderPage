@@ -81,7 +81,7 @@ public class UserDataFavBasket : IUserDataFavBasket
 
     public async Task<object?> DeleteFromBasket(Guid customerId, Guid productId)
     {
-        var basket = GetUserBasket(customerId);
+        var basket = await GetUserBasket(customerId);
         var product = await _context.BasketItems.FirstOrDefaultAsync(
             p => p.ProductId == productId);
         if (product == null)
