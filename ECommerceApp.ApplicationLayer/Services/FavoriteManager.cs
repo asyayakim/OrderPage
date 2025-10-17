@@ -80,4 +80,15 @@ public class FavoriteManager : IFavoriteManager
         var products = await _userDataFavBasket.AddProductToTheBasketToDb(customer.Id, basketEntity);
         return products;
     }
+
+    public async Task<object?> DeleteItemAsync(string userId, Guid productId)
+    {
+        var customer = await _customerRepository.GetByIdAsync(Guid.Parse(userId));
+        if (customer == null)
+            return new { Message = "Customer not found" };
+
+        var productDeleted = await _userDataFavBasket.DeleteFromBasket(customer.Id, productId);
+        return productDeleted;
+
+    }
 }

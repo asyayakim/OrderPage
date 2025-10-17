@@ -11,4 +11,5 @@ public interface IFavoriteManager
     Task<List<object?>> GetProductsFromBasketAsync();
     Task<List<object?>> GetAllFavoritesAsync(string userId);
     Task<object?> AddProductToBasketAsync(string userId, BasketDto productId);
+    Task<object?> DeleteItemAsync(string user, Guid productId);
 }

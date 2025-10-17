@@ -38,4 +38,14 @@ public class BasketController : ControllerBase
             return NotFound(new { Message = "product not found" });
         return Ok(product);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromQuery]  Guid productId)
+    {
+        var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (await _userManager.FindByIdAsync(user) == null)
+            return NotFound(new { Message = "user not found" });
+        var deletedProduct = await _favoriteManager.DeleteItemAsync(user, productId);
+        return Ok(deletedProduct);
+    }
 }

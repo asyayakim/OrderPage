@@ -1,4 +1,3 @@
-using ECommerceApp.ApplicationLayer.DTO;
 using ECommerceApp.Domain;
 using ECommerceApp.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,6 @@ namespace Order.Infrastructure.Repositories;
 public class UserDataFavBasket : IUserDataFavBasket
 {
     private readonly AppDbContext _context;
-
     public UserDataFavBasket(AppDbContext context)
     {
         _context = context;
@@ -64,14 +62,7 @@ public class UserDataFavBasket : IUserDataFavBasket
 
     public async Task<Basket?> AddProductToTheBasketToDb(Guid customerId, Basket basket)
     {
-        var userBasket = await _context.
-            Baskets.Include(b => b.Items)
-            .FirstOrDefaultAsync(b => b.CustomerId == customerId);
-        if (userBasket == null)
-        {
-           userBasket = Basket.Create(customerId);
-           _context.Baskets.Add(userBasket);
-        }
+        var userBasket = await GetUserBasket(customerId);
 
         foreach (var item in basket.Items)
         {
@@ -85,6 +76,38 @@ public class UserDataFavBasket : IUserDataFavBasket
         }
         
         await _context.SaveChangesAsync();
+        return userBasket;
+    }
+
+    public async Task<object?> DeleteFromBasket(Guid customerId, Guid productId)
+    {
+        var basket = GetUserBasket(customerId);
+        var product = await _context.BasketItems.FirstOrDefaultAsync(
+            p => p.ProductId == productId);
+        if (product == null)
+        {
+            return null;
+        }
+        if (product.Quantity >= 1)
+            product.Quantity--;
+        if (product.Quantity == 0)
+            _context.Remove(product);
+        await _context.SaveChangesAsync();
+        return basket;
+    }
+
+
+    private async Task<Basket> GetUserBasket(Guid customerId)
+    {
+        var userBasket = await _context.
+            Baskets.Include(b => b.Items)
+            .FirstOrDefaultAsync(b => b.CustomerId == customerId);
+        if (userBasket == null)
+        {
+            userBasket = Basket.Create(customerId);
+            _context.Baskets.Add(userBasket);
+        }
+
         return userBasket;
     }
 }

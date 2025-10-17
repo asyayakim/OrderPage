@@ -8,4 +8,5 @@ public interface IUserDataFavBasket
     Task<List<Basket>> GetAllProductsFromBasketsAllCustomersFromDb();
     Task<IEnumerable<Favorite>> GetAllFavoritesByUserFromDb(Guid customerId);
     Task<Basket?> AddProductToTheBasketToDb(Guid customerId, Basket basketEntity);
+    Task<object?> DeleteFromBasket(Guid customerId, Guid productId);
 }
