@@ -25,7 +25,6 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ProductImporter>();
-builder.Services.AddScoped<ProductServer>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<ProductCategorizer>();
@@ -64,7 +63,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddIdentity<UserData, AppRole>()
+builder.Services.AddIdentity<UserData, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
@@ -134,7 +133,8 @@ builder.Services.AddScoped<FruitDiscount>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<IUserDataFavBasket, UserDataFavBasket>();
 builder.Services.AddScoped<IFavoriteManager, FavoriteManager>();
-
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 
 // var allowedOrigins = builder.Configuration["AllowedOrigins"]?
@@ -166,11 +166,11 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//     await RoleManagerSeeder.CreateRoles(services);
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await RoleManagerSeeder.CreateRoles(services);
+}
 //temporally
 
 
