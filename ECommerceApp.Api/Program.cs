@@ -160,7 +160,8 @@ builder.Services.AddCors(options =>
                 "https://product-service-frontend.onrender.com"
             )
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -189,7 +190,7 @@ var app = builder.Build();
 //
 // }
 
-
+//
 bool enableSwaggerInProd = builder.Configuration.GetValue<bool>("EnableSwaggerInProd");
 if (app.Environment.IsDevelopment() || enableSwaggerInProd)
 {
