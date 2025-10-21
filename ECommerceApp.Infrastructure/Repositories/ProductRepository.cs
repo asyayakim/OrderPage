@@ -36,7 +36,10 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product?> GetOneAsync()
     {
-        var product = await _context.Products.FirstOrDefaultAsync();
+        var product = await _context.Products
+            .Include(p => p.Store)
+            .Include(p => p.Nutrition)
+            .FirstOrDefaultAsync();
         return product;
     }
 }
